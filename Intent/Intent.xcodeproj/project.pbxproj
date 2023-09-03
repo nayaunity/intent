@@ -14,6 +14,12 @@
 		71E11A472AA54E8A00DA8FF2 /* IntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A462AA54E8A00DA8FF2 /* IntentTests.swift */; };
 		71E11A512AA54E8A00DA8FF2 /* IntentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A502AA54E8A00DA8FF2 /* IntentUITests.swift */; };
 		71E11A532AA54E8A00DA8FF2 /* IntentUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A522AA54E8A00DA8FF2 /* IntentUITestsLaunchTests.swift */; };
+		71E11A682AA54F4700DA8FF2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A672AA54F4700DA8FF2 /* LoginViewModel.swift */; };
+		71E11A6B2AA54F5E00DA8FF2 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A6A2AA54F5E00DA8FF2 /* AuthenticationService.swift */; };
+		71E11A6D2AA54F7700DA8FF2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A6C2AA54F7700DA8FF2 /* User.swift */; };
+		71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A6E2AA54F8A00DA8FF2 /* LoginView.swift */; };
+		71E11A712AA54F9100DA8FF2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A702AA54F9100DA8FF2 /* ProfileView.swift */; };
+		71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A722AA54FA400DA8FF2 /* SwipeableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +50,12 @@
 		71E11A4C2AA54E8A00DA8FF2 /* IntentUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntentUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E11A502AA54E8A00DA8FF2 /* IntentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentUITests.swift; sourceTree = "<group>"; };
 		71E11A522AA54E8A00DA8FF2 /* IntentUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		71E11A672AA54F4700DA8FF2 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		71E11A6A2AA54F5E00DA8FF2 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		71E11A6C2AA54F7700DA8FF2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		71E11A6E2AA54F8A00DA8FF2 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		71E11A702AA54F9100DA8FF2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		71E11A722AA54FA400DA8FF2 /* SwipeableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +106,10 @@
 		71E11A342AA54E8900DA8FF2 /* Intent */ = {
 			isa = PBXGroup;
 			children = (
+				71E11A5F2AA54EDF00DA8FF2 /* Models */,
+				71E11A612AA54EEF00DA8FF2 /* Views */,
+				71E11A662AA54F3000DA8FF2 /* ViewModels */,
+				71E11A692AA54F5200DA8FF2 /* Services */,
 				71E11A352AA54E8900DA8FF2 /* IntentApp.swift */,
 				71E11A372AA54E8900DA8FF2 /* ContentView.swift */,
 				71E11A392AA54E8A00DA8FF2 /* Assets.xcassets */,
@@ -125,6 +141,72 @@
 				71E11A522AA54E8A00DA8FF2 /* IntentUITestsLaunchTests.swift */,
 			);
 			path = IntentUITests;
+			sourceTree = "<group>";
+		};
+		71E11A5F2AA54EDF00DA8FF2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A6C2AA54F7700DA8FF2 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		71E11A612AA54EEF00DA8FF2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A622AA54EF800DA8FF2 /* Login */,
+				71E11A632AA54EFC00DA8FF2 /* Profile */,
+				71E11A652AA54F0800DA8FF2 /* Swipe */,
+				71E11A642AA54F0000DA8FF2 /* Feedback */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		71E11A622AA54EF800DA8FF2 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A6E2AA54F8A00DA8FF2 /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		71E11A632AA54EFC00DA8FF2 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A702AA54F9100DA8FF2 /* ProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		71E11A642AA54F0000DA8FF2 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		71E11A652AA54F0800DA8FF2 /* Swipe */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A722AA54FA400DA8FF2 /* SwipeableView.swift */,
+			);
+			path = Swipe;
+			sourceTree = "<group>";
+		};
+		71E11A662AA54F3000DA8FF2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A672AA54F4700DA8FF2 /* LoginViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		71E11A692AA54F5200DA8FF2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A6A2AA54F5E00DA8FF2 /* AuthenticationService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +339,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */,
 				71E11A382AA54E8900DA8FF2 /* ContentView.swift in Sources */,
 				71E11A362AA54E8900DA8FF2 /* IntentApp.swift in Sources */,
+				71E11A682AA54F4700DA8FF2 /* LoginViewModel.swift in Sources */,
+				71E11A6D2AA54F7700DA8FF2 /* User.swift in Sources */,
+				71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */,
+				71E11A712AA54F9100DA8FF2 /* ProfileView.swift in Sources */,
+				71E11A6B2AA54F5E00DA8FF2 /* AuthenticationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
