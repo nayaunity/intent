@@ -14,9 +14,9 @@ struct SwipeableView: View {
     @State private var currentIndex: Int = 0
     
     // Sample data - replace with your list of users or fetch them from your backend
-    let users: [User] = [
-        User(id: "1", name: "Alice", bio: "Bio goes here..."),
-        User(id: "2", name: "Bob", bio: "Bio goes here..."),
+    let users: [SwipeableUser] = [
+        SwipeableUser(id: "1", name: "Alice", bio: "Bio goes here...", profileImage: "user1", rating: 4.5),
+        SwipeableUser(id: "2", name: "Bob", bio: "Bio goes here...", profileImage: "user2", rating: 4.2),
         //... add more users
     ]
 
@@ -61,25 +61,33 @@ enum SwipeStatus {
 }
 
 struct CardView: View {
-    var user: User
+    var user: SwipeableUser
 
     var body: some View {
         VStack {
+            Image(user.profileImage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 400, height: 400)
+                .clipped()
             Text(user.name)
+            Text("Rating: \(user.rating, specifier: "%.1f")")
             Text(user.bio)
             // ... any other UI elements you want to display for the user
         }
-        .frame(width: 300, height: 400)
+        .frame(width: 300, height: 500)
         .background(Color.white)
         .cornerRadius(10)
         .shadow(radius: 10)
     }
 }
 
-struct User {
+struct SwipeableUser {
     var id: String
     var name: String
     var bio: String
+    var profileImage: String
+    var rating: Double
 }
 
 struct SwipeableView_Previews: PreviewProvider {

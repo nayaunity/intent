@@ -20,6 +20,8 @@
 		71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A6E2AA54F8A00DA8FF2 /* LoginView.swift */; };
 		71E11A712AA54F9100DA8FF2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A702AA54F9100DA8FF2 /* ProfileView.swift */; };
 		71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A722AA54FA400DA8FF2 /* SwipeableView.swift */; };
+		71E11A752AA553FB00DA8FF2 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A742AA553FB00DA8FF2 /* FeedbackView.swift */; };
+		71E11A782AA5541700DA8FF2 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A772AA5541700DA8FF2 /* ListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,8 @@
 		71E11A6E2AA54F8A00DA8FF2 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		71E11A702AA54F9100DA8FF2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		71E11A722AA54FA400DA8FF2 /* SwipeableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableView.swift; sourceTree = "<group>"; };
+		71E11A742AA553FB00DA8FF2 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
+		71E11A772AA5541700DA8FF2 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +162,7 @@
 				71E11A632AA54EFC00DA8FF2 /* Profile */,
 				71E11A652AA54F0800DA8FF2 /* Swipe */,
 				71E11A642AA54F0000DA8FF2 /* Feedback */,
+				71E11A762AA5540E00DA8FF2 /* List */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 		71E11A642AA54F0000DA8FF2 /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
+				71E11A742AA553FB00DA8FF2 /* FeedbackView.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -207,6 +213,14 @@
 				71E11A6A2AA54F5E00DA8FF2 /* AuthenticationService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		71E11A762AA5540E00DA8FF2 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A772AA5541700DA8FF2 /* ListView.swift */,
+			);
+			path = List;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -341,6 +355,8 @@
 			files = (
 				71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */,
 				71E11A382AA54E8900DA8FF2 /* ContentView.swift in Sources */,
+				71E11A782AA5541700DA8FF2 /* ListView.swift in Sources */,
+				71E11A752AA553FB00DA8FF2 /* FeedbackView.swift in Sources */,
 				71E11A362AA54E8900DA8FF2 /* IntentApp.swift in Sources */,
 				71E11A682AA54F4700DA8FF2 /* LoginViewModel.swift in Sources */,
 				71E11A6D2AA54F7700DA8FF2 /* User.swift in Sources */,

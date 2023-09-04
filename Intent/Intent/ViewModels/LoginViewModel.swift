@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+class LoginViewModel: ObservableObject {
+    func authenticate(username: String, password: String) {
+        // Authentication logic
+    }
+
+    func register(username: String, password: String) {
+        // Registration logic
+    }
+}
