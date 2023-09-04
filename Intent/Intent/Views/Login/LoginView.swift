@@ -37,14 +37,15 @@ struct LoginView: View {
 
             Button("Login", action: login)
                 .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
+//                .background(Color.black)
+//                .underline()
+                .foregroundColor(.black)
                 .cornerRadius(8)
 
             Button("Sign Up", action: signUp)
                 .padding()
-                .background(Color.green)
-                .foregroundColor(.white)
+                .background(Color.white)
+                .foregroundColor(.black)
                 .cornerRadius(8)
         }
         .padding(.horizontal, 40)

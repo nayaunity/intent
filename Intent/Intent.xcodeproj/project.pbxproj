@@ -26,6 +26,7 @@
 		71E11A7D2AA5599B00DA8FF2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 71E11A7C2AA5599B00DA8FF2 /* FirebaseFirestore */; };
 		71E11A852AA5616500DA8FF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71E11A842AA5616500DA8FF2 /* GoogleService-Info.plist */; };
 		71E11A892AA569F300DA8FF2 /* CreateProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A882AA569F300DA8FF2 /* CreateProfileView.swift */; };
+		71E11A8C2AA5772400DA8FF2 /* LogoutLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A8B2AA5772400DA8FF2 /* LogoutLinkView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		71E11A772AA5541700DA8FF2 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		71E11A842AA5616500DA8FF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71E11A882AA569F300DA8FF2 /* CreateProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileView.swift; sourceTree = "<group>"; };
+		71E11A8B2AA5772400DA8FF2 /* LogoutLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutLinkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +169,7 @@
 		71E11A612AA54EEF00DA8FF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71E11A8A2AA5771200DA8FF2 /* Logout */,
 				71E11A622AA54EF800DA8FF2 /* Login */,
 				71E11A632AA54EFC00DA8FF2 /* Profile */,
 				71E11A652AA54F0800DA8FF2 /* Swipe */,
@@ -231,6 +234,14 @@
 				71E11A772AA5541700DA8FF2 /* ListView.swift */,
 			);
 			path = List;
+			sourceTree = "<group>";
+		};
+		71E11A8A2AA5771200DA8FF2 /* Logout */ = {
+			isa = PBXGroup;
+			children = (
+				71E11A8B2AA5772400DA8FF2 /* LogoutLinkView.swift */,
+			);
+			path = Logout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,6 +384,7 @@
 			files = (
 				71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */,
 				71E11A382AA54E8900DA8FF2 /* ContentView.swift in Sources */,
+				71E11A8C2AA5772400DA8FF2 /* LogoutLinkView.swift in Sources */,
 				71E11A892AA569F300DA8FF2 /* CreateProfileView.swift in Sources */,
 				71E11A782AA5541700DA8FF2 /* ListView.swift in Sources */,
 				71E11A752AA553FB00DA8FF2 /* FeedbackView.swift in Sources */,
