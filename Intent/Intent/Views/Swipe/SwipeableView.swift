@@ -17,6 +17,9 @@ struct SwipeableView: View {
     let users: [SwipeableUser] = [
         SwipeableUser(id: "1", name: "Alice", bio: "Bio goes here...", profileImage: "user1", rating: 4.5),
         SwipeableUser(id: "2", name: "Bob", bio: "Bio goes here...", profileImage: "user2", rating: 4.2),
+        SwipeableUser(id: "3", name: "Taylor", bio: "Musician and weekend warrior.", profileImage: "user3", rating: 3.8),
+        SwipeableUser(id: "4", name: "Casey", bio: "Tech enthusiast and traveler.", profileImage: "user4", rating: 4.7),
+        SwipeableUser(id: "5", name: "Sam", bio: "Nature photographer.", profileImage: "user5", rating: 4.0),
         //... add more users
     ]
 
