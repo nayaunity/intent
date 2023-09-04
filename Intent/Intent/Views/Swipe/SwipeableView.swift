@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import FirebaseFirestore
+import FirebaseAuth
 
 struct SwipeableView: View {
     @State private var users: [User] = []
@@ -53,31 +54,47 @@ struct SwipeableView: View {
     }
 
     func fetchUsers() {
-            print("Fetching users...") // Added for debugging
-            
-            let db = Firestore.firestore()
-            db.collection("users").getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("Error fetching users: \(error.localizedDescription)") // Added for debugging
-                    return
-                }
-                
-                guard let documents = snapshot?.documents else {
-                    print("No documents or snapshot is nil.") // Added for debugging
-                    return
-                }
-
-                print("Fetched \(documents.count) users.") // Added for debugging
-                
-                self.users = documents.compactMap { (queryDocumentSnapshot) -> User? in
-                    let user = User(fromSnapshot: queryDocumentSnapshot)
-                    if user == nil {
-                        print("Failed to parse user from document: \(queryDocumentSnapshot.data())") // Added for debugging
-                    }
-                    return user
-                }
-            }
+        // Get the current user's ID
+        guard let currentUserId = Auth.auth().currentUser?.uid else {
+            print("Failed to get the current user's ID")
+            return
         }
+        
+        print("Current User ID: \(currentUserId)")
+        
+        let db = Firestore.firestore()
+        db.collection("users").getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching users from Firestore: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("No documents returned from Firestore")
+                return
+            }
+
+            print("Total users fetched from Firestore: \(documents.count)")
+            
+            self.users = documents.compactMap { (queryDocumentSnapshot) -> User? in
+                // Convert the document to a User
+                guard let user = User(fromSnapshot: queryDocumentSnapshot) else {
+                    print("Failed to convert document to User: \(queryDocumentSnapshot.data())")
+                    return nil
+                }
+                
+                // Filter out the current user's profile
+                if user.id == currentUserId {
+                    print("Filtering out the current user's profile: \(user.name)")
+                    return nil
+                }
+                
+                return user
+            }
+            
+            print("Total users after filtering out the current user: \(self.users.count)")
+        }
+    }
 }
 
 struct SwipeableView_Previews: PreviewProvider {
