@@ -24,9 +24,8 @@ struct ProfileView: View {
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView(user: User(id: "1", name: "Sample", bio: "Sample Bio", profileImage: "user1", rating: 4.2))
-
-    }
-}
+//struct ProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileView(user: User(id: "1", name: "Sample", bio: "Sample Bio", profileImageURL: "user1", rating: 4.2))
+//    }
+//}

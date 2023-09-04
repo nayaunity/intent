@@ -7,27 +7,18 @@
 
 import Foundation
 import SwiftUI
+import FirebaseFirestore
 
 struct SwipeableView: View {
+    @State private var users: [User] = []
     @State private var offset: CGSize = .zero
-    @State private var swipeStatus: SwipeStatus = .none
-    @State private var currentIndex: Int = 0
-    
-    // Sample data - replace with your list of users or fetch them from your backend
-    let users: [SwipeableUser] = [
-        SwipeableUser(id: "1", name: "Alice", bio: "Loves hiking and coffee shops.", profileImage: "user1", rating: 4.5),
-        SwipeableUser(id: "2", name: "Taylor", bio: "Travel blogger and foodie.", profileImage: "user2", rating: 4.2),
-        SwipeableUser(id: "3", name: "Zander", bio: "Musician and weekend warrior.", profileImage: "user3", rating: 3.8),
-        SwipeableUser(id: "4", name: "Casey", bio: "Tech enthusiast and traveler.", profileImage: "user4", rating: 4.7),
-        SwipeableUser(id: "5", name: "Sam", bio: "Nature photographer.", profileImage: "user5", rating: 4.0),
-        //... add more users
-    ]
+    @State private var isTextVisible: Bool = false  // Added this state
 
     var body: some View {
-        ZStack {
-            if currentIndex < users.count {
-                CardView(user: users[currentIndex])
-                    .offset(x: offset.width, y: offset.height)
+        VStack {
+            if let user = users.first {
+                CardView(user: user)
+                    .offset(offset)
                     .gesture(
                         DragGesture()
                             .onChanged { gesture in
@@ -35,62 +26,58 @@ struct SwipeableView: View {
                             }
                             .onEnded { _ in
                                 if self.offset.width < -100 {
-                                    self.swipeStatus = .left
+                                    // Swipe left action
+                                    self.users.removeFirst()
                                 } else if self.offset.width > 100 {
-                                    self.swipeStatus = .right
-                                } else {
-                                    self.swipeStatus = .none
+                                    // Swipe right action
+                                    self.users.removeFirst()
                                 }
-                                
-                                switch self.swipeStatus {
-                                case .none:
-                                    self.offset = .zero
-                                case .left, .right:
-                                    self.currentIndex += 1
-                                    self.offset = .zero
-                                }
+                                self.offset = .zero
                             }
                     )
+
+                if isTextVisible {
+                    Text("Animated text")
+                }
+
             } else {
-                // Handle when there are no more cards
-                Text("No more profiles")
+                Text("No more profiles to show!")
+            }
+        }
+        .onAppear(perform: fetchUsers)
+        .onAppear { // Add this block to animate the text on appear
+            withAnimation(.spring()) {
+                self.isTextVisible = true
             }
         }
     }
-}
 
-enum SwipeStatus {
-    case left, right, none
-}
+    func fetchUsers() {
+            print("Fetching users...") // Added for debugging
+            
+            let db = Firestore.firestore()
+            db.collection("users").getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error fetching users: \(error.localizedDescription)") // Added for debugging
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    print("No documents or snapshot is nil.") // Added for debugging
+                    return
+                }
 
-struct CardView: View {
-    var user: SwipeableUser
-
-    var body: some View {
-        VStack {
-            Image(user.profileImage)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 400, height: 400)
-                .clipped()
-            Text(user.name)
-            Text("Rating: \(user.rating, specifier: "%.1f")")
-            Text(user.bio)
-            // ... any other UI elements you want to display for the user
+                print("Fetched \(documents.count) users.") // Added for debugging
+                
+                self.users = documents.compactMap { (queryDocumentSnapshot) -> User? in
+                    let user = User(fromSnapshot: queryDocumentSnapshot)
+                    if user == nil {
+                        print("Failed to parse user from document: \(queryDocumentSnapshot.data())") // Added for debugging
+                    }
+                    return user
+                }
+            }
         }
-        .frame(width: 300, height: 500)
-        .background(Color.white)
-        .cornerRadius(10)
-        .shadow(radius: 10)
-    }
-}
-
-struct SwipeableUser {
-    var id: String
-    var name: String
-    var bio: String
-    var profileImage: String
-    var rating: Double
 }
 
 struct SwipeableView_Previews: PreviewProvider {
@@ -98,3 +85,4 @@ struct SwipeableView_Previews: PreviewProvider {
         SwipeableView()
     }
 }
+

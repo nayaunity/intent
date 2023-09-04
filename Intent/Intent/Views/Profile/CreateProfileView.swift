@@ -19,86 +19,91 @@ struct CreateProfileView: View {
     @State private var bio: String = ""
     @State private var inputImage: UIImage?
     @State private var showImagePicker: Bool = false
-
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var navigateToSwipeableView: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            LogoutLink()
-                .offset(y: -100)
-                .offset(x: -15)
-            TextField("Name", text: $name)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .font(Font.system(size: 16, weight: .light, design: .default))
-            
-            HStack(spacing: 20) {
-                VStack {
-                    Text("Sex:")
-                        .font(Font.system(size: 16, weight: .light, design: .default))
-                    Picker("Select Sex", selection: $sex) {
-                        Text("Select...").tag("")
-                        Text("Male").tag("Male")
-                        Text("Female").tag("Female")
-                    }.pickerStyle(MenuPickerStyle())
-                }
-                Spacer()
+            VStack(alignment: .leading, spacing: 20) {
+                LogoutLink()
+                    .offset(y: -100)
+                    .offset(x: -15)
                 
-                VStack {
-                    Text("Gender Identity:")
-                        .font(Font.system(size: 16, weight: .light, design: .default))
-                    Picker("Select Gender Identity", selection: $genderIdentity) {
-                        Text("Select...").tag("")
-                        Text("Man").tag("Man")
-                        Text("Woman").tag("Woman")
-                        Text("Non-binary").tag("Non-binary")
-                    }.pickerStyle(MenuPickerStyle())
+                TextField("Name", text: $name)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .font(Font.system(size: 16, weight: .light, design: .default))
+                
+                HStack(spacing: 20) {
+                    VStack {
+                        Text("Sex:")
+                            .font(Font.system(size: 16, weight: .light, design: .default))
+                        Picker("Select Sex", selection: $sex) {
+                            Text("Select...").tag("")
+                            Text("Male").tag("Male")
+                            Text("Female").tag("Female")
+                        }.pickerStyle(MenuPickerStyle())
+                    }
+                    Spacer()
+                    
+                    VStack {
+                        Text("Gender Identity:")
+                            .font(Font.system(size: 16, weight: .light, design: .default))
+                        Picker("Select Gender Identity", selection: $genderIdentity) {
+                            Text("Select...").tag("")
+                            Text("Man").tag("Man")
+                            Text("Woman").tag("Woman")
+                            Text("Non-binary").tag("Non-binary")
+                        }.pickerStyle(MenuPickerStyle())
+                    }
                 }
-            }
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(8)
-            
-            TextField("Bio", text: $bio)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
-                .font(Font.system(size: 16, weight: .light, design: .default))
-            
-            if let image = inputImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
+                
+                TextField("Bio", text: $bio)
+                    .padding()
+                    .background(Color(.systemGray6))
                     .cornerRadius(8)
-            } else {
-                Text("No profile picture selected")
-                    .font(Font.system(size: 14, weight: .light, design: .default))
-            }
-            
-            Button("Select Profile Picture") {
-                showImagePicker = true
-            }
-            .padding()
-            .foregroundColor(Color.black)
-            .cornerRadius(8)
-            .offset(x: -15)
-            Divider()
-                .overlay(.black)
-            Button("Save Profile", action: saveProfile)
+                    .font(Font.system(size: 16, weight: .light, design: .default))
+                
+                if let image = inputImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(8)
+                } else {
+                    Text("No profile picture selected")
+                        .font(Font.system(size: 14, weight: .light, design: .default))
+                }
+                
+                Button("Select Profile Picture") {
+                    showImagePicker = true
+                }
                 .padding()
                 .foregroundColor(Color.black)
+                .cornerRadius(8)
                 .offset(x: -15)
-        }
-        .padding(.horizontal, 40)
-        .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
-            ImagePicker(image: $inputImage)
-        }
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("Message"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-        }
+                
+                Divider().overlay(.black)
+                
+                Button("Save Profile", action: saveProfile)
+                    .padding()
+                    .foregroundColor(Color.black)
+                    .offset(x: -15)
+                NavigationLink(destination: SwipeableView()) {
+                    Text("Start Swiping")
+                }
+            }
+            .padding(.horizontal, 40)
+            .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
+                ImagePicker(image: $inputImage)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Message"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
     }
     
     func allFieldsValid() -> Bool {
@@ -130,7 +135,7 @@ struct CreateProfileView: View {
                 return
             }
 
-            guard let imageUrl = url else {
+            guard let profileImageURL = url else {
                 alertMessage = "Error getting profile picture URL. Please try again."
                 showAlert = true
                 return
@@ -145,7 +150,7 @@ struct CreateProfileView: View {
                 "sex": sex,
                 "genderIdentity": genderIdentity,
                 "bio": bio,
-                "profilePictureUrl": imageUrl.absoluteString
+                "profilePictureUrl": profileImageURL.absoluteString
             ]
 
             docRef.setData(values) { error in
@@ -156,6 +161,8 @@ struct CreateProfileView: View {
                 } else {
                     alertMessage = "Profile successfully saved!"
                     showAlert = true
+                    print("Attempting to navigate to SwipeableView...")
+                    self.navigateToSwipeableView = true
                 }
             }
         }

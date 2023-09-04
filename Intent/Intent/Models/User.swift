@@ -6,12 +6,34 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseFirestoreSwift
 
-struct User: Identifiable {
-    var id: String
+struct User: Identifiable, Codable {
+    @DocumentID var id: String?
     var name: String
     var bio: String
-    var profileImage: String
-    var rating: Double
-    // Add more properties as needed (e.g., age, interests, photos)
+    var email: String
+    var sex: String
+    var genderIdentity: String
+    var profilePictureUrl: String
+    var rating: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case bio
+        case email
+        case sex
+        case genderIdentity = "genderIdentity"
+        case profilePictureUrl = "profilePictureUrl"
+        case rating
+    }
+
+    init?(fromSnapshot snapshot: QueryDocumentSnapshot) {
+        guard let data = try? snapshot.data(as: User.self) else {
+            return nil
+        }
+        self = data
+    }
 }
