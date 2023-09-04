@@ -5,133 +5,177 @@
 //  Created by Nyaradzo Bere on 9/3/23.
 //
 
-import Foundation
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import FirebaseStorage
 
 struct CreateProfileView: View {
     @State private var name: String = ""
     @State private var sex: String = ""
     @State private var genderIdentity: String = ""
     @State private var bio: String = ""
-    @State private var profilePicture: UIImage? = nil  // Placeholder for image upload logic
-    
+    @State private var inputImage: UIImage?
+    @State private var showImagePicker: Bool = false
+
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    @State private var navigateToSwipeView: Bool = false
-
-    private let neutralColor = Color.gray.opacity(0.2)
-    private let fontDesign = Font.system(size: 18, weight: .thin)
 
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 25) {
-                TextField("Name", text: $name)
-                    .padding()
-                    .background(neutralColor)
-                    .cornerRadius(10)
-                    .font(fontDesign)
-
-                HStack(spacing: 30) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Sex:")
-                            .font(fontDesign)
-                        Picker("Select Sex", selection: $sex) {
-                            Text("Select...").tag("")
-                            Text("Male").tag("Male")
-                            Text("Female").tag("Female")
-                        }
-                        .padding()
-                        .background(neutralColor)
-                        .cornerRadius(10)
-                    }
-
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Gender Identity:")
-                            .font(fontDesign)
-                        Picker("Select Gender Identity", selection: $genderIdentity) {
-                            Text("Select...").tag("")
-                            Text("Man").tag("Man")
-                            Text("Woman").tag("Woman")
-                            Text("Non-binary").tag("Non-binary")
-                        }
-                        .padding()
-                        .background(neutralColor)
-                        .cornerRadius(10)
-                    }
+        VStack(alignment: .leading, spacing: 20) {
+            LogoutLink()
+            TextField("Name", text: $name)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+                .font(Font.system(size: 16, weight: .light, design: .default))
+            
+            HStack(spacing: 20) {
+                VStack {
+                    Text("Sex:")
+                        .font(Font.system(size: 16, weight: .light, design: .default))
+                    Picker("Select Sex", selection: $sex) {
+                        Text("Select...").tag("")
+                        Text("Male").tag("Male")
+                        Text("Female").tag("Female")
+                    }.pickerStyle(MenuPickerStyle())
                 }
-
-                TextField("Bio", text: $bio)
-                    .padding()
-                    .background(neutralColor)
-                    .cornerRadius(10)
-                    .font(fontDesign)
-
-                Button("Save Profile", action: saveProfile)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 30)
-                    .background(Color.black)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .font(fontDesign)
-
-                Button("Go to Swipe View") {
-                    navigateToSwipeView = true
+                
+                VStack {
+                    Text("Gender Identity:")
+                        .font(Font.system(size: 16, weight: .light, design: .default))
+                    Picker("Select Gender Identity", selection: $genderIdentity) {
+                        Text("Select...").tag("")
+                        Text("Man").tag("Man")
+                        Text("Woman").tag("Woman")
+                        Text("Non-binary").tag("Non-binary")
+                    }.pickerStyle(MenuPickerStyle())
                 }
-                .padding(.vertical, 10)
-                .padding(.horizontal, 30)
-                .background(Color.gray)
-                .foregroundColor(.black)
-                .cornerRadius(10)
-                .font(fontDesign)
             }
-            .padding(.horizontal, 30)
-            .padding(.vertical, 20)
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            
+            TextField("Bio", text: $bio)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+                .font(Font.system(size: 16, weight: .light, design: .default))
+            
+            if let image = inputImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .cornerRadius(8)
+            } else {
+                Text("No profile picture selected")
+                    .font(Font.system(size: 14, weight: .light, design: .default))
             }
-            .background(NavigationLink("", destination: SwipeableView(), isActive: $navigateToSwipeView))
-//            .navigationTitle("Create Profile")
-            .navigationBarItems(trailing: LogoutLink())
-            .background(Color.white.edgesIgnoringSafeArea(.all))
+            
+            Button("Select Profile Picture") {
+                showImagePicker = true
+            }
+            .padding()
+            .background(Color.black)
+            .foregroundColor(Color.white)
+            .cornerRadius(8)
+            
+            Button("Save Profile", action: saveProfile)
+                .padding()
+                .background(Color.black)
+                .foregroundColor(Color.white)
+                .cornerRadius(8)
+        }
+        .padding(.horizontal, 40)
+        .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
+            ImagePicker(image: $inputImage)
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Message"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
-
+    
     func allFieldsValid() -> Bool {
-        return !name.isEmpty && !sex.isEmpty && !genderIdentity.isEmpty && !bio.isEmpty
+        return !name.isEmpty && !sex.isEmpty && !genderIdentity.isEmpty && !bio.isEmpty && inputImage != nil
     }
-
+    
+    func loadImage() {
+        guard let _ = inputImage else { return }
+        // You can process the image (if needed) or directly upload it to Firebase Storage
+    }
+    
     func saveProfile() {
         if !allFieldsValid() {
-            alertMessage = "Please fill out all fields before saving."
+            alertMessage = "Please fill out all fields and select a profile picture before saving."
             showAlert = true
             return
         }
 
         guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let email = Auth.auth().currentUser?.email else { return }
+        guard let image = inputImage else { return }
 
-        let db = Firestore.firestore()
-        let docRef = db.collection("users").document(uid)
-
-        let values: [String: Any] = [
-            "email": email,
-            "name": name,
-            "sex": sex,
-            "genderIdentity": genderIdentity,
-            "bio": bio
-            // Handle profile picture uploads and save URL/reference here
-        ]
-
-        docRef.setData(values) { error in
+        // First, upload the image
+        uploadImage(image) { url, error in
             if let error = error {
-                print("Error writing document: \(error)")
-                alertMessage = "Error saving profile. Please try again."
+                print("Error uploading image: \(error)")
+                alertMessage = "Error uploading profile picture. Please try again."
                 showAlert = true
-            } else {
-                print("Document successfully written!")
-                // Handle what to do next, e.g. navigate to the main app
+                return
+            }
+
+            guard let imageUrl = url else {
+                alertMessage = "Error getting profile picture URL. Please try again."
+                showAlert = true
+                return
+            }
+
+            let db = Firestore.firestore()
+            let docRef = db.collection("users").document(uid)
+
+            let values: [String: Any] = [
+                "email": email,
+                "name": name,
+                "sex": sex,
+                "genderIdentity": genderIdentity,
+                "bio": bio,
+                "profilePictureUrl": imageUrl.absoluteString
+            ]
+
+            docRef.setData(values) { error in
+                if let error = error {
+                    print("Error writing document: \(error)")
+                    alertMessage = "Error saving profile. Please try again."
+                    showAlert = true
+                } else {
+                    alertMessage = "Profile successfully saved!"
+                    showAlert = true
+                }
+            }
+        }
+    }
+
+    func uploadImage(_ image: UIImage, completion: @escaping (_ url: URL?, _ error: Error?) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion(nil, NSError(domain: "FirebaseAuthError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to retrieve user ID"]))
+            return
+        }
+
+        let storage = Storage.storage().reference().child("profilePics").child("\(uid).jpg")
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else {
+            completion(nil, NSError(domain: "ImageError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to data"]))
+            return
+        }
+
+        storage.putData(imageData, metadata: nil) { _, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+
+            storage.downloadURL { url, error in
+                completion(url, error)
             }
         }
     }
