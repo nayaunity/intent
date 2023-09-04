@@ -12,8 +12,17 @@ import Firebase
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
+    @State private var userIsLoggedIn = false
 
     var body: some View {
+        if userIsLoggedIn {
+            CreateProfileView()
+        } else {
+            content
+        }
+    }
+
+    var content: some View {
         VStack(alignment: .center, spacing: 20) {
             TextField("Email", text: $email)
                 .padding()
@@ -39,8 +48,14 @@ struct LoginView: View {
                 .cornerRadius(8)
         }
         .padding(.horizontal, 40)
+        .onAppear {
+            Auth.auth().addStateDidChangeListener { auth, user in
+                if user != nil {
+                    userIsLoggedIn.toggle()
+                }
+            }
+        }
     }
-
     func login() {
         // Handle login logic
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
