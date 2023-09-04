@@ -7,14 +7,15 @@
 
 import Foundation
 import SwiftUI
+import Firebase
 
 struct LoginView: View {
-    @State private var username: String = ""
+    @State private var email: String = ""
     @State private var password: String = ""
 
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
-            TextField("Username", text: $username)
+            TextField("Email", text: $email)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
@@ -42,11 +43,23 @@ struct LoginView: View {
 
     func login() {
         // Handle login logic
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print("Login Error: \(error.localizedDescription)")
+            }
+        }
     }
+
 
     func signUp() {
         // Handle sign-up logic
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print("SignUp Error: \(error.localizedDescription)")
+            }
+        }
     }
+
 }
 
 struct LoginView_Previews: PreviewProvider {
