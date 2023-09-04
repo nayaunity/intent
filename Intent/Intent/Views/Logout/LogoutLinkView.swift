@@ -7,39 +7,25 @@
 
 import Foundation
 import SwiftUI
-import Firebase
 
 struct LogoutLink: View {
-    @State private var navigateToLoginView: Bool = false
-    @State private var showAlert: Bool = false
-    @State private var alertMessage: String = ""
+    @EnvironmentObject var sessionStore: SessionStore
 
     var body: some View {
-        VStack {
-            NavigationLink("", destination: LoginView(), isActive: $navigateToLoginView)
-            Button("Logout") {
-                logout()
-            }
-            .padding()
-            .background(Color.black)
-            .foregroundColor(.white)
-            .cornerRadius(8)
-        }
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-        }
-    }
-
-    func logout() {
-        do {
-            try Auth.auth().signOut()
-            navigateToLoginView = true
-        } catch {
-            alertMessage = "Error signing out. Please try again."
-            showAlert = true
+        Button(action: {
+            sessionStore.signOut()
+        }) {
+            Text("Logout")
+                .font(.headline)
+                .foregroundColor(.black)
+                .padding(.horizontal, 30)
+                .padding(.vertical, 15)
+//                .background(Color.black)
+//                .cornerRadius(8)
         }
     }
 }
+
 
 struct LogoutLink_Previews: PreviewProvider {
     static var previews: some View {

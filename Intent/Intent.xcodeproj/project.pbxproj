@@ -29,6 +29,7 @@
 		71E11A8C2AA5772400DA8FF2 /* LogoutLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A8B2AA5772400DA8FF2 /* LogoutLinkView.swift */; };
 		71E11A8F2AA665FC00DA8FF2 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 71E11A8E2AA665FC00DA8FF2 /* FirebaseStorage */; };
 		71E11A922AA66BC600DA8FF2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A912AA66BC600DA8FF2 /* ImagePicker.swift */; };
+		71E11A942AA66F8C00DA8FF2 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A932AA66F8C00DA8FF2 /* SessionStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		71E11A882AA569F300DA8FF2 /* CreateProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileView.swift; sourceTree = "<group>"; };
 		71E11A8B2AA5772400DA8FF2 /* LogoutLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutLinkView.swift; sourceTree = "<group>"; };
 		71E11A912AA66BC600DA8FF2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		71E11A932AA66F8C00DA8FF2 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				71E11A6A2AA54F5E00DA8FF2 /* AuthenticationService.swift */,
+				71E11A932AA66F8C00DA8FF2 /* SessionStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				71E11A782AA5541700DA8FF2 /* ListView.swift in Sources */,
 				71E11A752AA553FB00DA8FF2 /* FeedbackView.swift in Sources */,
 				71E11A362AA54E8900DA8FF2 /* IntentApp.swift in Sources */,
+				71E11A942AA66F8C00DA8FF2 /* SessionStore.swift in Sources */,
 				71E11A682AA54F4700DA8FF2 /* LoginViewModel.swift in Sources */,
 				71E11A6D2AA54F7700DA8FF2 /* User.swift in Sources */,
 				71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */,

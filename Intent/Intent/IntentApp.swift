@@ -10,12 +10,25 @@ import Firebase
 
 @main
 struct IntentApp: App {
-    init () {
+    @StateObject private var sessionStore = SessionStore()
+
+    init() {
         FirebaseApp.configure()
     }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView {
+                switch sessionStore.isUserAuthenticated {
+                case .undefined:
+                    Text("Loading...")
+                case .signedOut:
+                    LoginView()
+                case .signedIn:
+                    CreateProfileView().environmentObject(sessionStore)
+                }
+            }
         }
     }
 }
+

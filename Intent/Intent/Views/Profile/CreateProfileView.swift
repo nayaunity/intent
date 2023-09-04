@@ -11,6 +11,8 @@ import FirebaseFirestore
 import FirebaseStorage
 
 struct CreateProfileView: View {
+    @EnvironmentObject var sessionStore: SessionStore
+
     @State private var name: String = ""
     @State private var sex: String = ""
     @State private var genderIdentity: String = ""
@@ -24,6 +26,8 @@ struct CreateProfileView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             LogoutLink()
+                .offset(y: -100)
+                .offset(x: -15)
             TextField("Name", text: $name)
                 .padding()
                 .background(Color(.systemGray6))
@@ -40,6 +44,7 @@ struct CreateProfileView: View {
                         Text("Female").tag("Female")
                     }.pickerStyle(MenuPickerStyle())
                 }
+                Spacer()
                 
                 VStack {
                     Text("Gender Identity:")
@@ -77,15 +82,15 @@ struct CreateProfileView: View {
                 showImagePicker = true
             }
             .padding()
-            .background(Color.black)
-            .foregroundColor(Color.white)
+            .foregroundColor(Color.black)
             .cornerRadius(8)
-            
+            .offset(x: -15)
+            Divider()
+                .overlay(.black)
             Button("Save Profile", action: saveProfile)
                 .padding()
-                .background(Color.black)
-                .foregroundColor(Color.white)
-                .cornerRadius(8)
+                .foregroundColor(Color.black)
+                .offset(x: -15)
         }
         .padding(.horizontal, 40)
         .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
