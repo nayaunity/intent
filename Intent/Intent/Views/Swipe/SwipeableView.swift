@@ -1,7 +1,9 @@
+//
 //  SwipeableView.swift
 //  Intent
 //
 //  Created by Nyaradzo Bere on 9/3/23.
+//
 
 import SwiftUI
 import FirebaseFirestore
@@ -13,7 +15,8 @@ struct SwipeableView: View {
     @State private var isTextVisible: Bool = false
     @State private var selectedGender: String? = nil
     @State private var swipedUserIDs: Set<String> = []
-    @State private var showMatchesView: Bool = false  // New state for navigation
+    @State private var showMatchesView: Bool = false
+    @State private var showLoginView: Bool = false  // New state for navigation
 
     var body: some View {
         NavigationView {
@@ -72,6 +75,7 @@ struct SwipeableView: View {
                 
                 // Hidden NavigationLink for navigation
                 NavigationLink("", destination: MatchesView(), isActive: $showMatchesView).hidden()
+                NavigationLink("", destination: LoginView(), isActive: $showLoginView).hidden()  // New NavigationLink for logout
             }
             .onAppear {
                 print("SwipeableView appeared")
@@ -81,6 +85,7 @@ struct SwipeableView: View {
                     self.isTextVisible = true
                 }
             }
+            .navigationBarItems(leading: logoutButton())  // Add the logout button to the navigation bar
         }
     }
 
@@ -225,6 +230,20 @@ struct SwipeableView: View {
             field: FieldValue.arrayUnion([userID])
         ]
         db.collection("swipes").document(currentUserID).setData(updateData, merge: true)
+    }
+    
+    func logoutButton() -> some View {
+        Button(action: {
+            do {
+                try Auth.auth().signOut()
+                print("Logged out successfully")
+                self.showLoginView = true
+            } catch let signOutError {
+                print("Error signing out: \(signOutError.localizedDescription)")
+            }
+        }) {
+            Text("Logout")
+        }
     }
 }
 

@@ -7,25 +7,37 @@
 
 import Foundation
 import SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
 
 struct ProfileView: View {
-    let user: User
+    @State private var user: User? = nil
 
     var body: some View {
         VStack {
-            Text(user.name)
-            Text(user.bio)
-            Button("Provide Feedback", action: provideFeedback)
+            if let user = user {
+                // Display user details
+                Text(user.name)
+                // ... other user details
+            } else {
+                Text("Loading profile...")
+            }
         }
+        .onAppear(perform: fetchUserProfile)
     }
 
-    func provideFeedback() {
-        // Navigate to FeedbackView
+    func fetchUserProfile() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        let docRef = db.collection("users").document(uid)
+
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists, let data = try? document.data(as: User.self) {
+                self.user = data
+            } else {
+                print("User profile not found")
+            }
+        }
     }
 }
 
-//struct ProfileView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfileView(user: User(id: "1", name: "Sample", bio: "Sample Bio", profileImageURL: "user1", rating: 4.2))
-//    }
-//}

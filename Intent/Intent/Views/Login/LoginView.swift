@@ -12,14 +12,10 @@ import Firebase
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var userIsLoggedIn = false
+//    @State private var userIsLoggedIn = false
 
     var body: some View {
-        if userIsLoggedIn {
-            CreateProfileView()
-        } else {
-            content
-        }
+        content
     }
 
     var content: some View {
@@ -49,13 +45,13 @@ struct LoginView: View {
                 .cornerRadius(8)
         }
         .padding(.horizontal, 40)
-        .onAppear {
-            Auth.auth().addStateDidChangeListener { auth, user in
-                if user != nil {
-                    userIsLoggedIn.toggle()
-                }
-            }
-        }
+//        .onAppear {
+//            Auth.auth().addStateDidChangeListener { auth, user in
+//                if user != nil {
+//                    userIsLoggedIn.toggle()
+//                }
+//            }
+//        }
     }
     func login() {
         // Handle login logic

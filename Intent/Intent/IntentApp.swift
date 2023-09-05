@@ -25,7 +25,7 @@ struct IntentApp: App {
                 case .signedOut:
                     LoginView()
                 case .signedIn:
-                    CreateProfileView().environmentObject(sessionStore)
+                    MainView().environmentObject(sessionStore)
                 }
             }
         }
