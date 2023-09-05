@@ -44,36 +44,40 @@ struct MatchesView: View {
         let likesRef = db.collection("likes")
 
         // Fetch users that the current user has liked
-        likesRef.whereField("likerId", isEqualTo: currentUserId).getDocuments { snapshot, error in
+        likesRef.whereField("liker", isEqualTo: currentUserId).getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else {
                 print("Error fetching liked users: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
 
-            let likedUserIds = documents.compactMap { $0["likedUserId"] as? String }
+            let likedUserIds = documents.compactMap { $0["liked"] as? String }
+            print("Number of users \(currentUserId) has liked: \(likedUserIds.count)")
 
             // Fetch users that have liked the current user
-            likesRef.whereField("likedUserId", isEqualTo: currentUserId).getDocuments { snapshot, error in
+            likesRef.whereField("liked", isEqualTo: currentUserId).getDocuments { snapshot, error in
                 guard let documents = snapshot?.documents else {
                     print("Error fetching users who liked the current user: \(error?.localizedDescription ?? "Unknown error")")
                     return
                 }
 
-                let usersWhoLikedCurrentUser = documents.compactMap { $0["likerId"] as? String }
+                let usersWhoLikedCurrentUser = documents.compactMap { $0["liker"] as? String }
+                print("Number of users who liked \(currentUserId): \(usersWhoLikedCurrentUser.count)")
 
                 // Find mutual likes to determine matches
                 let mutualLikes = Set(likedUserIds).intersection(usersWhoLikedCurrentUser)
+                print("Mutual likes: \(mutualLikes)")
 
                 // Fetch details of matched users
                 let usersRef = db.collection("users")
                 if !mutualLikes.isEmpty {
-                    usersRef.whereField("uid", in: Array(mutualLikes)).getDocuments { snapshot, error in
+                    usersRef.whereField(FieldPath.documentID(), in: Array(mutualLikes)).getDocuments { snapshot, error in
                         guard let documents = snapshot?.documents else {
                             print("Error fetching matched user details: \(error?.localizedDescription ?? "Unknown error")")
                             return
                         }
 
                         self.matchedUsers = documents.compactMap { User(fromSnapshot: $0) }
+                        print("Matched users: \(self.matchedUsers.map { $0.name })")
                     }
                 }
             }
