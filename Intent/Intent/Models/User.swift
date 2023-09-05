@@ -36,4 +36,16 @@ struct User: Identifiable, Codable {
         }
         self = data
     }
+
+    // Default initializer to ensure all properties are initialized
+    init(id: String? = nil, name: String = "", bio: String = "", email: String = "", sex: String = "", genderIdentity: String = "", profilePictureUrl: String = "", rating: Double? = nil) {
+        self.id = id
+        self.name = name
+        self.bio = bio
+        self.email = email
+        self.sex = sex
+        self.genderIdentity = genderIdentity
+        self.profilePictureUrl = profilePictureUrl
+        self.rating = rating
+    }
 }

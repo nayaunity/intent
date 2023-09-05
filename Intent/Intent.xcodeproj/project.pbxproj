@@ -33,6 +33,7 @@
 		71E11A972AA679E100DA8FF2 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A962AA679E100DA8FF2 /* CardView.swift */; };
 		71E11A9A2AA67A4300DA8FF2 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 71E11A992AA67A4300DA8FF2 /* SDWebImageSwiftUI */; };
 		71E11A9E2AA67E2C00DA8FF2 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 71E11A9D2AA67E2C00DA8FF2 /* FirebaseFirestoreSwift */; };
+		71E11AA12AA6D7F900DA8FF2 /* MatchesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AA02AA6D7F900DA8FF2 /* MatchesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		71E11A912AA66BC600DA8FF2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		71E11A932AA66F8C00DA8FF2 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		71E11A962AA679E100DA8FF2 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		71E11AA02AA6D7F900DA8FF2 /* MatchesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 		71E11A612AA54EEF00DA8FF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71E11A9F2AA6D7F000DA8FF2 /* Matches */,
 				71E11A952AA679CE00DA8FF2 /* UserCard */,
 				71E11A8A2AA5771200DA8FF2 /* Logout */,
 				71E11A622AA54EF800DA8FF2 /* Login */,
@@ -281,6 +284,14 @@
 				71E11A962AA679E100DA8FF2 /* CardView.swift */,
 			);
 			path = UserCard;
+			sourceTree = "<group>";
+		};
+		71E11A9F2AA6D7F000DA8FF2 /* Matches */ = {
+			isa = PBXGroup;
+			children = (
+				71E11AA02AA6D7F900DA8FF2 /* MatchesView.swift */,
+			);
+			path = Matches;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,6 +448,7 @@
 				71E11A942AA66F8C00DA8FF2 /* SessionStore.swift in Sources */,
 				71E11A682AA54F4700DA8FF2 /* LoginViewModel.swift in Sources */,
 				71E11A6D2AA54F7700DA8FF2 /* User.swift in Sources */,
+				71E11AA12AA6D7F900DA8FF2 /* MatchesView.swift in Sources */,
 				71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */,
 				71E11A712AA54F9100DA8FF2 /* ProfileView.swift in Sources */,
 				71E11A6B2AA54F5E00DA8FF2 /* AuthenticationService.swift in Sources */,
