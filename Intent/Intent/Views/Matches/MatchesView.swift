@@ -24,18 +24,22 @@ struct MatchesView: View {
 
             List(matchedUsers) { user in
                 HStack {
-                    NavigationLink(destination: ProfileView(user: user)) {
-                        WebImage(url: URL(string: user.profilePictureUrl))
-                            .resizable()
-                            .scaledToFit()
-//                            .frame(width: 60, height: 60)
-                            .clipShape(Circle())
-                            .frame(width: 60, height: 60)
-                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    }
+                    WebImage(url: URL(string: user.profilePictureUrl))
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                        .frame(width: 60, height: 60)
+                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    
                     Text(user.name)
                 }
+                .background(
+                    NavigationLink("", destination: MessagingView(user: user)) // Changed the destination here
+                        .opacity(0) // Make it invisible
+                )
+                .buttonStyle(PlainButtonStyle()) // Ensure the background isn't highlighted when tapped
             }
+
         }
         .onAppear(perform: fetchMatches)
     }
