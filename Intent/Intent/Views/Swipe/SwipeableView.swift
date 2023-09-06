@@ -12,7 +12,7 @@ import FirebaseAuth
 struct SwipeableView: View {
     @State private var users: [User] = []
     @State private var offset: CGSize = .zero
-    @State private var isTextVisible: Bool = false
+//    @State private var isTextVisible: Bool = false
     @State private var selectedGender: String? = nil
     @State private var swipedUserIDs: Set<String> = []
     @State private var showMatchesView: Bool = false
@@ -28,6 +28,7 @@ struct SwipeableView: View {
                     genderButton(title: "Woman", gender: "Woman")
                     genderButton(title: "Non-binary", gender: "Non-binary")
                 }
+                .foregroundColor(Color.black)
                 .padding()
 
                 Text("Selected gender: \(selectedGender ?? "All")")
@@ -52,9 +53,9 @@ struct SwipeableView: View {
                                 }
                         )
 
-                    if isTextVisible {
-                        Text("Animated text")
-                    }
+//                    if isTextVisible {
+//                        Text("Animated text")
+//                    }
                 } else {
                     Text("No more profiles to show!")
                 }
@@ -67,8 +68,7 @@ struct SwipeableView: View {
                 }) {
                     Text("See Matches")
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .cornerRadius(8)
                 }
                 .padding(.bottom)
@@ -82,7 +82,6 @@ struct SwipeableView: View {
                 fetchSwipedUsers()
                 fetchUsers()
                 withAnimation(.spring()) {
-                    self.isTextVisible = true
                 }
             }
             .navigationBarItems(leading: logoutButton())  // Add the logout button to the navigation bar

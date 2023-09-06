@@ -23,7 +23,7 @@ struct MessagingView: View {
                         .resizable()
                         .scaledToFit()
                         .clipShape(Circle())
-                        .frame(width: 60, height: 60)
+                        .frame(width: 95, height: 95)
                         .overlay(Circle().stroke(Color.white, lineWidth: 2))
                     
                     Text(user.name)
