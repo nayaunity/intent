@@ -162,8 +162,9 @@ struct Message: Identifiable {
     var isCurrentUser: Bool
 }
 
-//struct MessagingView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MessagingView(user: User(name: "John Doe"))
-//    }
-//}
+struct MessagingView_Previews: PreviewProvider {
+    static var previews: some View {
+        MessagingView(user: User(id: "1", name: "John Doe", profilePictureUrl: "https://example.com/johndoe.jpg"), senderID: "SENDER_USER_ID_HERE")
+    }
+}
+
