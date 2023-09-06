@@ -45,13 +45,13 @@ struct LoginView: View {
                 .cornerRadius(8)
         }
         .padding(.horizontal, 40)
-        .background(
-            Image("intentLoginImage")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-                .offset(y: 100)
-        )
+//        .background(
+//            Image("intentLoginImage")
+//                .resizable()
+//                .scaledToFill()
+//                .edgesIgnoringSafeArea(.all)
+//                .offset(y: 100)
+//        )
 //        .onAppear {
 //            Auth.auth().addStateDidChangeListener { auth, user in
 //                if user != nil {

@@ -12,27 +12,35 @@ import FirebaseAuth
 struct SwipeableView: View {
     @State private var users: [User] = []
     @State private var offset: CGSize = .zero
-//    @State private var isTextVisible: Bool = false
-    @State private var selectedGender: String? = nil
+    @State private var selectedGenders: Set<String> = ["Man", "Woman", "Non-binary"]
+    @State private var showingFilterView: Bool = false
     @State private var swipedUserIDs: Set<String> = []
     @State private var showMatchesView: Bool = false
-    @State private var showLoginView: Bool = false  // New state for navigation
+    @State private var showLoginView: Bool = false
 
     var body: some View {
         NavigationView {
             VStack {
-                // Gender selection buttons
-                HStack {
-                    genderButton(title: "All", gender: nil)
-                    genderButton(title: "Man", gender: "Man")
-                    genderButton(title: "Woman", gender: "Woman")
-                    genderButton(title: "Non-binary", gender: "Non-binary")
+                // Filter button
+                Button(action: {
+                    showingFilterView.toggle()
+                }) {
+                    Text("Filter")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
                 }
-                .foregroundColor(Color.black)
-                .padding()
-
-                Text("Selected gender: \(selectedGender ?? "All")")
-
+                .sheet(isPresented: $showingFilterView) {
+                    FilterView(selectedGenders: $selectedGenders) {
+                        // This block will be executed when filters are applied
+                        fetchSwipedUsers()
+                        fetchUsers()
+                    }
+                }
+                
+                Text("Selected genders: \(selectedGenders.sorted().joined(separator: ", "))")
+                
                 if let user = users.first {
                     CardView(user: user)
                         .offset(offset)
@@ -52,15 +60,11 @@ struct SwipeableView: View {
                                     self.offset = .zero
                                 }
                         )
-
-//                    if isTextVisible {
-//                        Text("Animated text")
-//                    }
                 } else {
                     Text("No more profiles to show!")
                 }
 
-                Spacer()  // Pushes the button to the bottom
+                Spacer()
 
                 // Button to navigate to MatchesView
                 Button(action: {
@@ -73,38 +77,25 @@ struct SwipeableView: View {
                 }
                 .padding(.bottom)
                 
-                // Hidden NavigationLink for navigation
                 NavigationLink("", destination: MatchesView(), isActive: $showMatchesView).hidden()
-                NavigationLink("", destination: LoginView(), isActive: $showLoginView).hidden()  // New NavigationLink for logout
+                NavigationLink("", destination: LoginView(), isActive: $showLoginView).hidden()
             }
             .onAppear {
                 print("SwipeableView appeared")
                 fetchSwipedUsers()
                 fetchUsers()
-                withAnimation(.spring()) {
-                }
             }
-            .navigationBarItems(leading: logoutButton())  // Add the logout button to the navigation bar
-        }
-    }
-
-    func genderButton(title: String, gender: String?) -> some View {
-        Button(action: {
-            self.selectedGender = gender
-            print("\(title) button tapped")
-            fetchSwipedUsers()
-            fetchUsers()
-        }) {
-            Text(title)
+            .navigationBarItems(leading: logoutButton())
         }
     }
 
     func fetchUsers() {
-        print("Fetching users based on filter: \(selectedGender ?? "All")")
+        print("Fetching users based on filter: \(selectedGenders)")
         let db = Firestore.firestore()
         var query: Query = db.collection("users")
-        if let gender = selectedGender {
-            query = query.whereField("genderIdentity", isEqualTo: gender)
+        
+        if !selectedGenders.isEmpty {
+            query = query.whereField("genderIdentity", in: Array(selectedGenders))
         }
         
         query.getDocuments { (snapshot, error) in
@@ -127,7 +118,7 @@ struct SwipeableView: View {
             print("Fetched \(self.users.count) users after applying filter.")
         }
     }
-    
+
     func fetchSwipedUsers() {
         print("Fetching swiped users")
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
@@ -144,23 +135,20 @@ struct SwipeableView: View {
             }
         }
     }
-    
+
     func handleRightSwipe(on user: User) {
         print("Handling right swipe on user: \(user.id ?? "Unknown ID")")
-        // Step 1: Record the like
         recordLike(for: user.id!) { success in
             if success {
-                // Step 2: Check for a match
                 checkForMatch(with: user.id!) { matched in
                     if matched {
-                        // Step 3: Store the match
                         storeMatch(with: user.id!)
                     }
                 }
             }
         }
     }
-    
+
     func recordLike(for userID: String, completion: @escaping (Bool) -> Void) {
         print("Recording like for user: \(userID)")
         let db = Firestore.firestore()
@@ -181,56 +169,58 @@ struct SwipeableView: View {
             }
         }
     }
-    
+
     func checkForMatch(with userID: String, completion: @escaping (Bool) -> Void) {
         print("Checking for match with user: \(userID)")
         let db = Firestore.firestore()
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
-        
+
         db.collection("likes").whereField("liker", isEqualTo: userID).whereField("liked", isEqualTo: currentUserID).getDocuments { (snapshot, error) in
             if let error = error {
-                print("Error checking for match:", error)
+                print("Failed to check for match:", error)
                 completion(false)
             } else if let documents = snapshot?.documents, !documents.isEmpty {
+                print("It's a match!")
                 completion(true)
             } else {
                 completion(false)
             }
         }
     }
-    
+
     func storeMatch(with userID: String) {
         print("Storing match with user: \(userID)")
         let db = Firestore.firestore()
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
-        
+
         let matchData: [String: Any] = [
-            "user1": currentUserID,
-            "user2": userID,
-            "timestamp": FieldValue.serverTimestamp()
+            "users": [currentUserID, userID]
         ]
-        
+
         db.collection("matches").addDocument(data: matchData) { error in
             if let error = error {
                 print("Failed to store match:", error)
             } else {
                 print("Match stored successfully!")
-                // Here you can also handle notifications or any other actions you'd like to take when a match occurs.
             }
         }
     }
-    
+
     func recordSwipe(for userID: String, liked: Bool) {
-        print("Recording swipe for user: \(userID), liked: \(liked)")
-        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let db = Firestore.firestore()
-        let field = liked ? "liked" : "disliked"
-        let updateData: [String: Any] = [
-            field: FieldValue.arrayUnion([userID])
-        ]
-        db.collection("swipes").document(currentUserID).setData(updateData, merge: true)
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+
+        db.collection("swipes").document(currentUserID).setData([
+            liked ? "liked" : "disliked": FieldValue.arrayUnion([userID])
+        ], merge: true) { error in
+            if let error = error {
+                print("Failed to record swipe:", error)
+            } else {
+                print("Swipe recorded successfully!")
+            }
+        }
     }
-    
+
     func logoutButton() -> some View {
         Button(action: {
             do {

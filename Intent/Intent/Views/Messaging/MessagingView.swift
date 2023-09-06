@@ -118,4 +118,3 @@ struct MessagingView_Previews: PreviewProvider {
         MessagingView(user: User(name: "John Doe"))
     }
 }
-
