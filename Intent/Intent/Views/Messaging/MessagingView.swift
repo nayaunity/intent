@@ -8,12 +8,17 @@
 import Foundation
 import SwiftUI
 import SDWebImageSwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct MessagingView: View {
     var user: User
+    var senderID: String
     
     @State private var messages: [Message] = []
     @State private var newMessage: String = ""
+    
+    private let db = Firestore.firestore()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -47,7 +52,6 @@ struct MessagingView: View {
                 }
                 .padding()
             }
-            
             // Input Field
             Divider()
             HStack {
@@ -63,15 +67,60 @@ struct MessagingView: View {
             }
             .padding(.vertical)
         }
+        .onAppear(perform: loadMessages)
     }
+    
     
     func sendMessage() {
         let trimmedMessage = newMessage.trimmingCharacters(in: .whitespaces)
-        
+
         if !trimmedMessage.isEmpty {
-            messages.append(Message(content: trimmedMessage, isCurrentUser: true)) // Assume current user is sending the message for this demo
-            newMessage = ""
+            // Create a new document in the "messages" collection
+            let messageData: [String: Any] = [
+                "senderID": senderID, // Use the sender's ID obtained from the parameter
+                "receiverID": user.id, // the receiver's ID
+                "content": trimmedMessage,
+                "timestamp": Timestamp(date: Date())
+            ]
+
+            db.collection("messages").addDocument(data: messageData) { error in
+                if let error = error {
+                    print("Error sending message: \(error.localizedDescription)")
+                } else {
+                    // Message sent successfully, you can update your UI or handle acknowledgments here
+                    messages.append(Message(content: trimmedMessage, isCurrentUser: true))
+                    newMessage = ""
+                }
+            }
         }
+    }
+
+    
+    // Load messages from Firestore (implement this)
+    func loadMessages() {
+        db.collection("messages")
+            .whereField("senderID", in: [senderID, user.id]) // Corrected sender and receiver IDs
+            .whereField("receiverID", in: [senderID, user.id]) // Corrected sender and receiver IDs
+            .order(by: "timestamp", descending: false)
+            .addSnapshotListener { querySnapshot, error in
+                if let error = error {
+                    print("Error fetching messages: \(error.localizedDescription)")
+                    return
+                }
+
+                guard let documents = querySnapshot?.documents else {
+                    print("No messages available")
+                    return
+                }
+
+                messages = documents.compactMap { document in
+                    let data = document.data()
+                    let senderID = data["senderID"] as? String ?? ""
+                    let content = data["content"] as? String ?? ""
+                    let isCurrentUser = senderID == self.senderID // Use self.senderID to avoid shadowing
+                    return Message(content: content, isCurrentUser: isCurrentUser)
+                }
+            }
     }
 }
 
@@ -113,8 +162,8 @@ struct Message: Identifiable {
     var isCurrentUser: Bool
 }
 
-struct MessagingView_Previews: PreviewProvider {
-    static var previews: some View {
-        MessagingView(user: User(name: "John Doe"))
-    }
-}
+//struct MessagingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MessagingView(user: User(name: "John Doe"))
+//    }
+//}

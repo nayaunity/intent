@@ -40,6 +40,8 @@
 		71E11AAC2AA8EAE500DA8FF2 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AAB2AA8EAE500DA8FF2 /* Message.swift */; };
 		71E11AAE2AA8EB3500DA8FF2 /* MessagingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AAD2AA8EB3500DA8FF2 /* MessagingViewModel.swift */; };
 		71E11AB12AA8F0C600DA8FF2 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB02AA8F0C600DA8FF2 /* FilterView.swift */; };
+		71E11AB32AA9004B00DA8FF2 /* RefreshFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */; };
+		71E11AB52AA902FB00DA8FF2 /* PersonalProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		71E11AAB2AA8EAE500DA8FF2 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		71E11AAD2AA8EB3500DA8FF2 /* MessagingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingViewModel.swift; sourceTree = "<group>"; };
 		71E11AB02AA8F0C600DA8FF2 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshFlag.swift; sourceTree = "<group>"; };
+		71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -227,6 +231,7 @@
 			children = (
 				71E11A702AA54F9100DA8FF2 /* ProfileView.swift */,
 				71E11A882AA569F300DA8FF2 /* CreateProfileView.swift */,
+				71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -292,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				71E11A912AA66BC600DA8FF2 /* ImagePicker.swift */,
+				71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -490,6 +496,7 @@
 				71E11A922AA66BC600DA8FF2 /* ImagePicker.swift in Sources */,
 				71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */,
 				71E11A382AA54E8900DA8FF2 /* ContentView.swift in Sources */,
+				71E11AB52AA902FB00DA8FF2 /* PersonalProfileView.swift in Sources */,
 				71E11A8C2AA5772400DA8FF2 /* LogoutLinkView.swift in Sources */,
 				71E11A972AA679E100DA8FF2 /* CardView.swift in Sources */,
 				71E11A892AA569F300DA8FF2 /* CreateProfileView.swift in Sources */,
@@ -499,6 +506,7 @@
 				71E11A362AA54E8900DA8FF2 /* IntentApp.swift in Sources */,
 				71E11AAA2AA81E6500DA8FF2 /* MessagingView.swift in Sources */,
 				71E11A942AA66F8C00DA8FF2 /* SessionStore.swift in Sources */,
+				71E11AB32AA9004B00DA8FF2 /* RefreshFlag.swift in Sources */,
 				71E11A682AA54F4700DA8FF2 /* LoginViewModel.swift in Sources */,
 				71E11AA42AA7A6DD00DA8FF2 /* MainView.swift in Sources */,
 				71E11A6D2AA54F7700DA8FF2 /* User.swift in Sources */,

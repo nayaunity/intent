@@ -17,6 +17,8 @@ struct SwipeableView: View {
     @State private var swipedUserIDs: Set<String> = []
     @State private var showMatchesView: Bool = false
     @State private var showLoginView: Bool = false
+    @State private var showProfileView: Bool = false
+
 
     var body: some View {
         NavigationView {
@@ -65,19 +67,33 @@ struct SwipeableView: View {
                 }
 
                 Spacer()
+                
+                HStack {
+                    Button(action: {
+                        self.showProfileView = true
+                    }) {
+                        Text("See Profile")
+                            .padding()
+                            .foregroundColor(.black)
+                            .cornerRadius(8)
+                    }
+                    .padding(.bottom)
+                    
+                    // Button to navigate to MatchesView
+                    Button(action: {
+                        self.showMatchesView = true
+                    }) {
+                        Text("See Matches")
+                            .padding()
+                            .foregroundColor(.black)
+                            .cornerRadius(8)
+                    }
+                    .padding(.bottom)
 
-                // Button to navigate to MatchesView
-                Button(action: {
-                    self.showMatchesView = true
-                }) {
-                    Text("See Matches")
-                        .padding()
-                        .foregroundColor(.black)
-                        .cornerRadius(8)
                 }
-                .padding(.bottom)
                 
                 NavigationLink("", destination: MatchesView(), isActive: $showMatchesView).hidden()
+                NavigationLink("", destination: PersonalProfileView(userId: Auth.auth().currentUser?.uid ?? ""), isActive: $showProfileView).hidden()
                 NavigationLink("", destination: LoginView(), isActive: $showLoginView).hidden()
             }
             .onAppear {

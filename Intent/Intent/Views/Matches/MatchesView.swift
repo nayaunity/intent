@@ -11,6 +11,7 @@ import SDWebImageSwiftUI
 
 struct MatchesView: View {
     @State private var matchedUsers: [User]
+    @State private var currentUserId: String?
 
     init(matchedUsers: [User] = []) {
         _matchedUsers = State(initialValue: matchedUsers)
@@ -34,14 +35,22 @@ struct MatchesView: View {
                     Text(user.name)
                 }
                 .background(
-                    NavigationLink("", destination: MessagingView(user: user)) // Changed the destination here
-                        .opacity(0) // Make it invisible
+                    NavigationLink("", destination: MessagingView(user: user, senderID: currentUserId ?? ""))
+                        .opacity(0)
                 )
-                .buttonStyle(PlainButtonStyle()) // Ensure the background isn't highlighted when tapped
+                .buttonStyle(PlainButtonStyle())
             }
-
         }
-        .onAppear(perform: fetchMatches)
+        .onAppear(perform: {
+            fetchMatches()
+            fetchCurrentUserId()
+        })
+    }
+
+    func fetchCurrentUserId() {
+        if let currentUser = Auth.auth().currentUser {
+            currentUserId = currentUser.uid
+        }
     }
 
     func fetchMatches() {
