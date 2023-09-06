@@ -35,6 +35,7 @@
 		71E11A9E2AA67E2C00DA8FF2 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 71E11A9D2AA67E2C00DA8FF2 /* FirebaseFirestoreSwift */; };
 		71E11AA12AA6D7F900DA8FF2 /* MatchesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AA02AA6D7F900DA8FF2 /* MatchesView.swift */; };
 		71E11AA42AA7A6DD00DA8FF2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AA32AA7A6DD00DA8FF2 /* MainView.swift */; };
+		71E11AA72AA7CCD000DA8FF2 /* ControllableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AA62AA7CCD000DA8FF2 /* ControllableScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		71E11A962AA679E100DA8FF2 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		71E11AA02AA6D7F900DA8FF2 /* MatchesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesView.swift; sourceTree = "<group>"; };
 		71E11AA32AA7A6DD00DA8FF2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		71E11AA62AA7CCD000DA8FF2 /* ControllableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllableScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +189,7 @@
 		71E11A612AA54EEF00DA8FF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71E11AA52AA7CCC100DA8FF2 /* Scroll */,
 				71E11AA22AA7A6CF00DA8FF2 /* Main */,
 				71E11A9F2AA6D7F000DA8FF2 /* Matches */,
 				71E11A952AA679CE00DA8FF2 /* UserCard */,
@@ -303,6 +306,14 @@
 				71E11AA32AA7A6DD00DA8FF2 /* MainView.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		71E11AA52AA7CCC100DA8FF2 /* Scroll */ = {
+			isa = PBXGroup;
+			children = (
+				71E11AA62AA7CCD000DA8FF2 /* ControllableScrollView.swift */,
+			);
+			path = Scroll;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -453,6 +464,7 @@
 				71E11A8C2AA5772400DA8FF2 /* LogoutLinkView.swift in Sources */,
 				71E11A972AA679E100DA8FF2 /* CardView.swift in Sources */,
 				71E11A892AA569F300DA8FF2 /* CreateProfileView.swift in Sources */,
+				71E11AA72AA7CCD000DA8FF2 /* ControllableScrollView.swift in Sources */,
 				71E11A782AA5541700DA8FF2 /* ListView.swift in Sources */,
 				71E11A752AA553FB00DA8FF2 /* FeedbackView.swift in Sources */,
 				71E11A362AA54E8900DA8FF2 /* IntentApp.swift in Sources */,

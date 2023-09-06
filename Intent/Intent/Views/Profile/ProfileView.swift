@@ -9,35 +9,33 @@ import Foundation
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
+import SDWebImageSwiftUI
 
 struct ProfileView: View {
-    @State private var user: User? = nil
+    var user: User
 
     var body: some View {
-        VStack {
-            if let user = user {
-                // Display user details
+        ScrollView {
+            VStack {
+                WebImage(url: URL(string: user.profilePictureUrl))
+                    .resizable()
+                    .scaledToFit()
+//                    .frame(width: 300, height: 400)
+                    .clipShape(Circle())
+                    .frame(width: 300, height: 400)
+                    .padding()
+
                 Text(user.name)
-                // ... other user details
-            } else {
-                Text("Loading profile...")
-            }
-        }
-        .onAppear(perform: fetchUserProfile)
-    }
+                    .font(.largeTitle)
+                    .padding()
 
-    func fetchUserProfile() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let db = Firestore.firestore()
-        let docRef = db.collection("users").document(uid)
+                Text(user.bio)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .padding()
 
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists, let data = try? document.data(as: User.self) {
-                self.user = data
-            } else {
-                print("User profile not found")
+                // ... Add more user details here if needed
             }
         }
     }
 }
-

@@ -10,7 +10,11 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct MatchesView: View {
-    @State private var matchedUsers: [User] = []
+    @State private var matchedUsers: [User]
+
+    init(matchedUsers: [User] = []) {
+        _matchedUsers = State(initialValue: matchedUsers)
+    }
 
     var body: some View {
         VStack {
@@ -20,11 +24,15 @@ struct MatchesView: View {
 
             List(matchedUsers) { user in
                 HStack {
-                    WebImage(url: URL(string: user.profilePictureUrl))
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 60, height: 60)
-                        .clipShape(Circle())
+                    NavigationLink(destination: ProfileView(user: user)) {
+                        WebImage(url: URL(string: user.profilePictureUrl))
+                            .resizable()
+                            .scaledToFit()
+//                            .frame(width: 60, height: 60)
+                            .clipShape(Circle())
+                            .frame(width: 60, height: 60)
+                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    }
                     Text(user.name)
                 }
             }
@@ -51,7 +59,6 @@ struct MatchesView: View {
             }
 
             let likedUserIds = documents.compactMap { $0["liked"] as? String }
-            print("Number of users \(currentUserId) has liked: \(likedUserIds.count)")
 
             // Fetch users that have liked the current user
             likesRef.whereField("liked", isEqualTo: currentUserId).getDocuments { snapshot, error in
@@ -61,11 +68,9 @@ struct MatchesView: View {
                 }
 
                 let usersWhoLikedCurrentUser = documents.compactMap { $0["liker"] as? String }
-                print("Number of users who liked \(currentUserId): \(usersWhoLikedCurrentUser.count)")
 
                 // Find mutual likes to determine matches
                 let mutualLikes = Set(likedUserIds).intersection(usersWhoLikedCurrentUser)
-                print("Mutual likes: \(mutualLikes)")
 
                 // Fetch details of matched users
                 let usersRef = db.collection("users")
@@ -77,7 +82,6 @@ struct MatchesView: View {
                         }
 
                         self.matchedUsers = documents.compactMap { User(fromSnapshot: $0) }
-                        print("Matched users: \(self.matchedUsers.map { $0.name })")
                     }
                 }
             }
@@ -87,6 +91,19 @@ struct MatchesView: View {
 
 struct MatchesView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchesView()
+        MatchesView(matchedUsers: User.mocks)
+    }
+}
+
+extension User {
+    static var mock: User {
+        User(id: "1", name: "Alex", bio: "Friendly and outgoing", email: "alex@example.com", sex: "Male", genderIdentity: "Man", profilePictureUrl: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2787&q=80", rating: 4.5)
+    }
+
+    static var mocks: [User] {
+        [
+            User.mock,
+            User(id: "2", name: "Jamie", bio: "Adventure lover", email: "jamie@example.com", sex: "Female", genderIdentity: "Woman", profilePictureUrl: "https://images.unsplash.com/photo-1664575602554-2087b04935a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2787&q=80", rating: 5.0)
+        ]
     }
 }
