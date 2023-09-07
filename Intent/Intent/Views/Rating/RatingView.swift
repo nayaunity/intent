@@ -14,15 +14,15 @@ struct RatingView: View {
     @State private var comfortabilityRating = 0
     @State private var presentationRating = 0
     @State private var conversationQualityRating = 0
-
     @State private var isRatingSubmitted = false
+    @State private var showSuccessMessage = false // Moved here
 
     var ratedUser: User
 
     var body: some View {
         VStack {
-            Text("Rate Your Date")
-                .font(.largeTitle)
+            Text("Rate your date with \(ratedUser.name)")
+                .font(.title)
                 .padding()
 
             // Ratings for promptness
@@ -59,6 +59,12 @@ struct RatingView: View {
             Button(action: {
                 // Handle submitting the ratings to the database or perform other actions
                 self.isRatingSubmitted = true
+                // Show the success message
+                self.showSuccessMessage = true
+                // Automatically hide the success message after 1 second
+                Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+                    self.showSuccessMessage = false
+                }
             }) {
                 Text("Submit Rating")
                     .padding()
@@ -68,14 +74,14 @@ struct RatingView: View {
             }
             .disabled(isRatingSubmitted)
             .padding()
-
-            if isRatingSubmitted {
-                Text("Rating submitted successfully!")
-                    .foregroundColor(.green)
-                    .padding()
-            }
         }
-        .navigationBarTitle(ratedUser.name)
+        .navigationBarHidden(true)
+        .alert(isPresented: $showSuccessMessage) {
+            Alert(
+                title: Text("Rating submitted successfully!"),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
 

@@ -17,41 +17,48 @@ struct ProfileView: View {
     @State private var isRatingViewPresented = false
 
     var body: some View {
-        ScrollView {
-            VStack {
-                WebImage(url: URL(string: user.profilePictureUrl))
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(Circle())
-                    .frame(width: 300, height: 400)
-                    .padding()
-
-                Text(user.name)
-                    .font(.largeTitle)
-                    .padding()
-
-                Text(user.bio)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                    .padding()
-
-                // ... Add more user details here if needed
-
-                // "We went on a date" button
-                Button(action: {
-                    self.isRatingViewPresented.toggle()
-                }) {
-                    Text("We went on a date")
+        NavigationView {
+            ScrollView {
+                VStack {
+                    WebImage(url: URL(string: user.profilePictureUrl))
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                        .frame(width: 300, height: 400)
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .padding()
-                .sheet(isPresented: $isRatingViewPresented) {
-                    RatingView(ratedUser: user)
+
+                    Text(user.name)
+                        .font(.largeTitle)
+                        .padding()
+
+                    Text(user.bio)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .padding()
+
+                    // ... Add more user details here if needed
+
+                    // "We went on a date" button
+                    NavigationLink(
+                        destination: RatingView(ratedUser: user),
+                        isActive: $isRatingViewPresented
+                    ) {
+                        EmptyView()
+                    }
+                    Button(action: {
+                        self.isRatingViewPresented.toggle()
+                    }) {
+                        Text("We went on a date")
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
                 }
             }
+//            .navigationBarTitle("Profile", displayMode: .inline)
+            .navigationBarHidden(true)
         }
     }
 }
