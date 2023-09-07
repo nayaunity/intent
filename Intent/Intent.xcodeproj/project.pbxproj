@@ -42,9 +42,11 @@
 		71E11AB12AA8F0C600DA8FF2 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB02AA8F0C600DA8FF2 /* FilterView.swift */; };
 		71E11AB32AA9004B00DA8FF2 /* RefreshFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */; };
 		71E11AB52AA902FB00DA8FF2 /* PersonalProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */; };
-		71E11AB82AAA349700DA8FF2 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB72AAA349700DA8FF2 /* RatingView.swift */; };
 		71E11ABD2AAA405300DA8FF2 /* RatingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11ABC2AAA405300DA8FF2 /* RatingAlertView.swift */; };
 		71E11AC12AAA43AC00DA8FF2 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AC02AAA43AC00DA8FF2 /* Rating.swift */; };
+		71E11AC32AAA682500DA8FF2 /* UserRatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AC22AAA682500DA8FF2 /* UserRatingsView.swift */; };
+		71E11AC52AAA697E00DA8FF2 /* RatingCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AC42AAA697E00DA8FF2 /* RatingCategoryView.swift */; };
+		71E11AC72AAA6AB400DA8FF2 /* AddRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AC62AAA6AB400DA8FF2 /* AddRatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,9 +100,11 @@
 		71E11AB02AA8F0C600DA8FF2 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshFlag.swift; sourceTree = "<group>"; };
 		71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileView.swift; sourceTree = "<group>"; };
-		71E11AB72AAA349700DA8FF2 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		71E11ABC2AAA405300DA8FF2 /* RatingAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingAlertView.swift; sourceTree = "<group>"; };
 		71E11AC02AAA43AC00DA8FF2 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
+		71E11AC22AAA682500DA8FF2 /* UserRatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRatingsView.swift; sourceTree = "<group>"; };
+		71E11AC42AAA697E00DA8FF2 /* RatingCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingCategoryView.swift; sourceTree = "<group>"; };
+		71E11AC62AAA6AB400DA8FF2 /* AddRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -362,7 +366,9 @@
 		71E11AB62AAA348B00DA8FF2 /* Rating */ = {
 			isa = PBXGroup;
 			children = (
-				71E11AB72AAA349700DA8FF2 /* RatingView.swift */,
+				71E11AC22AAA682500DA8FF2 /* UserRatingsView.swift */,
+				71E11AC42AAA697E00DA8FF2 /* RatingCategoryView.swift */,
+				71E11AC62AAA6AB400DA8FF2 /* AddRatingView.swift */,
 			);
 			path = Rating;
 			sourceTree = "<group>";
@@ -526,7 +532,6 @@
 				71E11A8C2AA5772400DA8FF2 /* LogoutLinkView.swift in Sources */,
 				71E11A972AA679E100DA8FF2 /* CardView.swift in Sources */,
 				71E11A892AA569F300DA8FF2 /* CreateProfileView.swift in Sources */,
-				71E11AB82AAA349700DA8FF2 /* RatingView.swift in Sources */,
 				71E11AA72AA7CCD000DA8FF2 /* ControllableScrollView.swift in Sources */,
 				71E11A782AA5541700DA8FF2 /* ListView.swift in Sources */,
 				71E11A752AA553FB00DA8FF2 /* FeedbackView.swift in Sources */,
@@ -538,11 +543,14 @@
 				71E11AA42AA7A6DD00DA8FF2 /* MainView.swift in Sources */,
 				71E11A6D2AA54F7700DA8FF2 /* User.swift in Sources */,
 				71E11AA12AA6D7F900DA8FF2 /* MatchesView.swift in Sources */,
+				71E11AC72AAA6AB400DA8FF2 /* AddRatingView.swift in Sources */,
 				71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */,
 				71E11AAC2AA8EAE500DA8FF2 /* Message.swift in Sources */,
 				71E11A712AA54F9100DA8FF2 /* ProfileView.swift in Sources */,
+				71E11AC52AAA697E00DA8FF2 /* RatingCategoryView.swift in Sources */,
 				71E11AC12AAA43AC00DA8FF2 /* Rating.swift in Sources */,
 				71E11A6B2AA54F5E00DA8FF2 /* AuthenticationService.swift in Sources */,
+				71E11AC32AAA682500DA8FF2 /* UserRatingsView.swift in Sources */,
 				71E11AAE2AA8EB3500DA8FF2 /* MessagingViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

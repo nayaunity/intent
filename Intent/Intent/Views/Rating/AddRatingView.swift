@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-struct RatingView: View {
+struct AddRatingView: View {
     @State private var promptnessRating = 0
     @State private var respectfulnessRating = 0
     @State private var comfortabilityRating = 0
@@ -162,44 +162,7 @@ struct RatingView: View {
     }
 }
 
-struct RatingCategoryView: View {
-    var category: String
-    @Binding var rating: Int
-    var infoButtonAction: () -> Void // Action for info button
-
-    var body: some View {
-        VStack {
-            HStack {
-                Text(category)
-                    .font(.headline)
-                    .padding()
-
-                // Info Button
-                Button(action: {
-                    self.infoButtonAction()
-                }) {
-                    Image(systemName: "info.circle")
-                        .foregroundColor(.blue)
-                }
-                .padding(.leading, 4)
-            }
-
-            HStack {
-                ForEach(1 ..< 6) { star in
-                    Image(systemName: star <= rating ? "star.fill" : "star")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .foregroundColor(Color.yellow)
-                        .onTapGesture {
-                            self.rating = star
-                        }
-                }
-            }
-        }
-    }
-}
-
-struct RatingView_Previews: PreviewProvider {
+struct AddRatingView_Previews: PreviewProvider {
     static var previews: some View {
         let user = User(
             id: "1",
@@ -212,6 +175,6 @@ struct RatingView_Previews: PreviewProvider {
             rating: 4.5
         )
 
-        return RatingView(ratedUser: user)
+        return AddRatingView(ratedUser: user)
     }
 }

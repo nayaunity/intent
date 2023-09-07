@@ -36,6 +36,14 @@ struct ProfileView: View {
     @State private var averageRatings: [String: Double] = [:]
     @State private var isRatingViewPresented = false
     @State private var overallAverageRating: Double = 0.0
+    
+    let ratingCategoryOrder: [String: Int] = [
+        "conversation quality": 1,
+        "picture match": 2,
+        "promptness": 3,
+        "respectfulness": 4,
+        "comfortability/safety": 5
+    ]
 
     var body: some View {
         NavigationView {
@@ -52,6 +60,11 @@ struct ProfileView: View {
                         .font(.largeTitle)
                         .padding()
                     
+                    Text(user.bio)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .padding()
+                    
                     HStack {
 //                        Text("Overall Average Rating:")
                         VStack {
@@ -59,13 +72,9 @@ struct ProfileView: View {
                                 .font(.headline)
                                 .padding(.bottom)
                             StarRatingView(rating: overallAverageRating)
+                                .padding(.bottom)
                         }
                     }
-
-                    Text(user.bio)
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                        .padding()
 
                     // Display average ratings or "No ratings yet" text
                     if averageRatings.isEmpty {
@@ -73,13 +82,14 @@ struct ProfileView: View {
                             .font(.headline)
                             .padding()
                     } else {
-                        ForEach(averageRatings.sorted(by: { $0.key < $1.key }), id: \.key) { (category, rating) in
+                        ForEach(averageRatings.sorted(by: {
+                            ratingCategoryOrder[$0.key.lowercased()] ?? Int.max <
+                            ratingCategoryOrder[$1.key.lowercased()] ?? Int.max
+                        }), id: \.key) { (category, rating) in
                             VStack {
-                                Text("\(category.capitalized) Rating: \(String(format: "%.2f", rating))")
+                                Text("\(category.capitalized): \(String(format: "%.2f", rating))")
                                     .font(.headline)
                                     .padding(.bottom)
-//                                Text(String(format: "%.2f", rating)) // Display the rating with two decimal places
-//                                                    .font(.headline)
                                 StarRatingView(rating: rating)
                                     .padding(.bottom)
                             }
@@ -88,7 +98,7 @@ struct ProfileView: View {
 
                     // "We went on a date" button
                     NavigationLink(
-                        destination: RatingView(ratedUser: user),
+                        destination: AddRatingView(ratedUser: user),
                         isActive: $isRatingViewPresented
                     ) {
                         EmptyView()
@@ -184,9 +194,9 @@ struct ProfileView: View {
 
                     totalRatings["promptness"] = (totalRatings["promptness"] ?? 0) + Double(promptnessRating)
                     totalRatings["respectfulness"] = (totalRatings["respectfulness"] ?? 0) + Double(respectfulnessRating)
-                    totalRatings["comfortability"] = (totalRatings["comfortability"] ?? 0) + Double(comfortabilityRating)
-                    totalRatings["presentation"] = (totalRatings["presentation"] ?? 0) + Double(presentationRating)
-                    totalRatings["conversationQuality"] = (totalRatings["conversationQuality"] ?? 0) + Double(conversationQualityRating)
+                    totalRatings["comfortability/Safety"] = (totalRatings["comfortability"] ?? 0) + Double(comfortabilityRating)
+                    totalRatings["Picture Match"] = (totalRatings["presentation"] ?? 0) + Double(presentationRating)
+                    totalRatings["Conversation Quality"] = (totalRatings["conversationQuality"] ?? 0) + Double(conversationQualityRating)
 
                     ratingCounts["promptness"] = (ratingCounts["promptness"] ?? 0) + 1
                     ratingCounts["respectfulness"] = (ratingCounts["respectfulness"] ?? 0) + 1
