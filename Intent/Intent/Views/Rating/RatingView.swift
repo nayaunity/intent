@@ -5,7 +5,6 @@
 //  Created by Nyaradzo Bere on 9/7/23.
 //
 
-import Foundation
 import SwiftUI
 import Firebase
 
@@ -21,7 +20,7 @@ struct RatingView: View {
     // Add properties for tracking the current user
     @State private var currentUser: User?
     @State private var isCurrentUserLoaded = false
-    
+
     var ratedUser: User
 
     init(ratedUser: User) {
@@ -36,35 +35,58 @@ struct RatingView: View {
             Text("Rate your date with \(ratedUser.name)")
                 .font(.title)
                 .padding()
-
-            // Ratings for promptness
-            RatingCategoryView(
-                category: "Promptness",
-                rating: $promptnessRating
-            )
-
-            // Ratings for respectfulness
-            RatingCategoryView(
-                category: "Respectfulness",
-                rating: $respectfulnessRating
-            )
-
-            // Ratings for comfortability/safety
-            RatingCategoryView(
-                category: "Comfortability/Safety",
-                rating: $comfortabilityRating
-            )
-
-            // Ratings for presentation
-            RatingCategoryView(
-                category: "Presentation",
-                rating: $presentationRating
-            )
-
-            // Ratings for conversation quality
+            
+            // Ratings for conversation quality with info button
             RatingCategoryView(
                 category: "Conversation Quality",
-                rating: $conversationQualityRating
+                rating: $conversationQualityRating,
+                infoButtonAction: {
+                    // Show an info popup for "Conversation Quality" category
+                    self.showInfoPopup(title: "Conversation Quality Info", message: "Was the conversation engaging? Did they listen as much as they spoke?")
+                }
+            )
+            
+            // Ratings for presentation with info button
+            RatingCategoryView(
+                category: "Picture Match",
+                rating: $presentationRating,
+                infoButtonAction: {
+                    // Show an info popup for "Presentation" category
+                    self.showInfoPopup(title: "Picture Match Info", message: "Did they look like their pictures?")
+                }
+            )
+            
+            // Ratings for promptness with info button
+            RatingCategoryView(
+                category: "Promptness",
+                rating: $promptnessRating,
+                infoButtonAction: {
+                    // Show an info popup for "Promptness" category
+                    // You can implement this as a popover or alert
+                    // Example:
+                    // self.showInfoPopup(category: "Promptness")
+                    self.showInfoPopup(title: "Promptness Info", message: "Rate how prompt your date was.\n\n5 = Perfectly on time or early\n4 = Slightly late (0-10 minutes)\n3 = Moderately late (11-20 minutes)\n2 = Quite late (21-30 minutes)\n1 = Over 30 minutes late")
+                }
+            )
+
+            // Ratings for respectfulness with info button
+            RatingCategoryView(
+                category: "Respectfulness",
+                rating: $respectfulnessRating,
+                infoButtonAction: {
+                    // Show an info popup for "Respectfulness" category
+                    self.showInfoPopup(title: "Respectfulness Info", message: "Did they treat you with respect and kindness?")
+                }
+            )
+
+            // Ratings for comfortability/safety with info button
+            RatingCategoryView(
+                category: "Comfortability/Safety",
+                rating: $comfortabilityRating,
+                infoButtonAction: {
+                    // Show an info popup for "Comfortability/Safety" category
+                    self.showInfoPopup(title: "Comfortability/Safety Info", message: "Did you feel safe during the date?")
+                }
             )
 
             // Submit Rating Button
@@ -104,6 +126,12 @@ struct RatingView: View {
         }
         isCurrentUserLoaded = true
     }
+    
+    private func showInfoPopup(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "I understand", style: .default, handler: nil))
+        UIApplication.shared.windows.first?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
 
     private func submitRatingToFirestore() {
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
@@ -137,12 +165,24 @@ struct RatingView: View {
 struct RatingCategoryView: View {
     var category: String
     @Binding var rating: Int
+    var infoButtonAction: () -> Void // Action for info button
 
     var body: some View {
         VStack {
-            Text(category)
-                .font(.headline)
-                .padding()
+            HStack {
+                Text(category)
+                    .font(.headline)
+                    .padding()
+
+                // Info Button
+                Button(action: {
+                    self.infoButtonAction()
+                }) {
+                    Image(systemName: "info.circle")
+                        .foregroundColor(.blue)
+                }
+                .padding(.leading, 4)
+            }
 
             HStack {
                 ForEach(1 ..< 6) { star in
