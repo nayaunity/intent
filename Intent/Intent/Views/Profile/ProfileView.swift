@@ -10,6 +10,27 @@ import SwiftUI
 import SDWebImageSwiftUI
 import Firebase
 
+struct StarRatingView: View {
+    let rating: Double
+    let maxRating: Double = 5.0 // Maximum rating value (e.g., 5 stars)
+    let starCount: Int = 5 // Number of stars in the rating
+
+    var body: some View {
+        HStack {
+            ForEach(1...starCount, id: \.self) { index in
+                let doubleIndex = Double(index)
+                let fullStar = min(max(0, rating - (doubleIndex - 1.0)), 1)
+                let halfStar = min(max(0, rating - (doubleIndex - 0.5)), 0.5)
+                
+                Image(systemName: fullStar >= 0.75 ? "star.fill" : (fullStar >= 0.25 || halfStar >= 0.25) ? "star.leadinghalf.fill" : halfStar > 0.0 ? "star.half.fill" : "star")
+                    .foregroundColor(fullStar > 0.0 ? .yellow : .gray)
+                    .font(.system(size: 20))
+            }
+        }
+    }
+}
+
+
 struct ProfileView: View {
     var user: User
     @State private var averageRatings: [String: Double] = [:]
@@ -42,9 +63,15 @@ struct ProfileView: View {
                             .padding()
                     } else {
                         ForEach(averageRatings.sorted(by: { $0.key < $1.key }), id: \.key) { (category, rating) in
-                            Text("\(category.capitalized) Rating: \(String(format: "%.1f", rating))")
-                                .font(.headline)
-                                .padding(.bottom)
+                            VStack {
+                                Text("\(category.capitalized) Rating: \(String(format: "%.2f", rating))")
+                                    .font(.headline)
+                                    .padding(.bottom)
+//                                Text(String(format: "%.2f", rating)) // Display the rating with two decimal places
+//                                                    .font(.headline)
+                                StarRatingView(rating: rating)
+                                    .padding(.bottom)
+                            }
                         }
                     }
 
