@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Firebase
 
 struct RatingView: View {
     @State private var promptnessRating = 0
@@ -15,9 +16,20 @@ struct RatingView: View {
     @State private var presentationRating = 0
     @State private var conversationQualityRating = 0
     @State private var isRatingSubmitted = false
-    @State private var showSuccessMessage = false // Moved here
+    @State private var showSuccessMessage = false
 
+    // Add properties for tracking the current user
+    @State private var currentUser: User?
+    @State private var isCurrentUserLoaded = false
+    
     var ratedUser: User
+
+    init(ratedUser: User) {
+        self.ratedUser = ratedUser
+
+        // Load the current user if available
+        loadCurrentUser()
+    }
 
     var body: some View {
         VStack {
@@ -57,14 +69,14 @@ struct RatingView: View {
 
             // Submit Rating Button
             Button(action: {
-                // Handle submitting the ratings to the database or perform other actions
                 self.isRatingSubmitted = true
-                // Show the success message
                 self.showSuccessMessage = true
-                // Automatically hide the success message after 1 second
                 Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
                     self.showSuccessMessage = false
                 }
+
+                // Submit the rating to Firestore
+                submitRatingToFirestore()
             }) {
                 Text("Submit Rating")
                     .padding()
@@ -81,6 +93,43 @@ struct RatingView: View {
                 title: Text("Rating submitted successfully!"),
                 dismissButton: .default(Text("OK"))
             )
+        }
+    }
+
+    private func loadCurrentUser() {
+        if let user = Auth.auth().currentUser {
+            // Load the current user's data if available
+            // You can fetch user data from Firestore or wherever it's stored
+            currentUser = User(id: user.uid, name: user.displayName ?? "", bio: "", email: user.email ?? "", sex: "", genderIdentity: "", profilePictureUrl: "", rating: nil)
+        }
+        isCurrentUserLoaded = true
+    }
+
+    private func submitRatingToFirestore() {
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+
+        let db = Firestore.firestore()
+        let ratingsCollection = db.collection("ratings")
+
+        // Create a document with the rating data
+        let ratingData: [String: Any] = [
+            "raterID": currentUserID ?? "",
+            "ratedUserID": ratedUser.id ?? "",
+            "timestamp": Timestamp(),
+            "promptnessRating": promptnessRating,
+            "respectfulnessRating": respectfulnessRating,
+            "comfortabilityRating": comfortabilityRating,
+            "presentationRating": presentationRating,
+            "conversationQualityRating": conversationQualityRating
+        ]
+
+        // Add the document to the "ratings" collection
+        ratingsCollection.addDocument(data: ratingData) { error in
+            if let error = error {
+                print("Error adding rating: \(error)")
+            } else {
+                print("Rating added successfully!")
+            }
         }
     }
 }

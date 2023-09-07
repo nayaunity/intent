@@ -43,6 +43,8 @@
 		71E11AB32AA9004B00DA8FF2 /* RefreshFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */; };
 		71E11AB52AA902FB00DA8FF2 /* PersonalProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */; };
 		71E11AB82AAA349700DA8FF2 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB72AAA349700DA8FF2 /* RatingView.swift */; };
+		71E11ABD2AAA405300DA8FF2 /* RatingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11ABC2AAA405300DA8FF2 /* RatingAlertView.swift */; };
+		71E11AC12AAA43AC00DA8FF2 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AC02AAA43AC00DA8FF2 /* Rating.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshFlag.swift; sourceTree = "<group>"; };
 		71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileView.swift; sourceTree = "<group>"; };
 		71E11AB72AAA349700DA8FF2 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		71E11ABC2AAA405300DA8FF2 /* RatingAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingAlertView.swift; sourceTree = "<group>"; };
+		71E11AC02AAA43AC00DA8FF2 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +201,7 @@
 			children = (
 				71E11A6C2AA54F7700DA8FF2 /* User.swift */,
 				71E11AAB2AA8EAE500DA8FF2 /* Message.swift */,
+				71E11AC02AAA43AC00DA8FF2 /* Rating.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -204,6 +209,7 @@
 		71E11A612AA54EEF00DA8FF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71E11AB92AAA401F00DA8FF2 /* Alert */,
 				71E11AB62AAA348B00DA8FF2 /* Rating */,
 				71E11AAF2AA8F0BB00DA8FF2 /* Filter */,
 				71E11AA82AA81E5800DA8FF2 /* Messaging */,
@@ -361,6 +367,14 @@
 			path = Rating;
 			sourceTree = "<group>";
 		};
+		71E11AB92AAA401F00DA8FF2 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				71E11ABC2AAA405300DA8FF2 /* RatingAlertView.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -503,6 +517,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71E11ABD2AAA405300DA8FF2 /* RatingAlertView.swift in Sources */,
 				71E11AB12AA8F0C600DA8FF2 /* FilterView.swift in Sources */,
 				71E11A922AA66BC600DA8FF2 /* ImagePicker.swift in Sources */,
 				71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */,
@@ -526,6 +541,7 @@
 				71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */,
 				71E11AAC2AA8EAE500DA8FF2 /* Message.swift in Sources */,
 				71E11A712AA54F9100DA8FF2 /* ProfileView.swift in Sources */,
+				71E11AC12AAA43AC00DA8FF2 /* Rating.swift in Sources */,
 				71E11A6B2AA54F5E00DA8FF2 /* AuthenticationService.swift in Sources */,
 				71E11AAE2AA8EB3500DA8FF2 /* MessagingViewModel.swift in Sources */,
 			);
