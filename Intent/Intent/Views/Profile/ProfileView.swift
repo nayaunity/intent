@@ -22,7 +22,7 @@ struct StarRatingView: View {
                 let fullStar = min(max(0, rating - (doubleIndex - 1.0)), 1)
                 let halfStar = min(max(0, rating - (doubleIndex - 0.5)), 0.5)
                 
-                Image(systemName: fullStar >= 0.75 ? "star.fill" : (fullStar >= 0.25 || halfStar >= 0.25) ? "star.leadinghalf.fill" : halfStar > 0.0 ? "star.half.fill" : "star")
+                Image(systemName: fullStar >= 0.9 ? "star.fill" : (fullStar >= 0.5 || halfStar >= 0.5) ? "star.leadinghalf.fill" : halfStar > 0.0 ? "star.half.fill" : "star")
                     .foregroundColor(fullStar > 0.0 ? .yellow : .gray)
                     .font(.system(size: 20))
             }
@@ -35,6 +35,7 @@ struct ProfileView: View {
     var user: User
     @State private var averageRatings: [String: Double] = [:]
     @State private var isRatingViewPresented = false
+    @State private var overallAverageRating: Double = 0.0
 
     var body: some View {
         NavigationView {
@@ -50,6 +51,16 @@ struct ProfileView: View {
                     Text(user.name)
                         .font(.largeTitle)
                         .padding()
+                    
+                    HStack {
+//                        Text("Overall Average Rating:")
+                        VStack {
+                            Text("Overall Rating: \(String(format: "%.2f", overallAverageRating))")
+                                .font(.headline)
+                                .padding(.bottom)
+                            StarRatingView(rating: overallAverageRating)
+                        }
+                    }
 
                     Text(user.bio)
                         .font(.subheadline)
@@ -97,6 +108,7 @@ struct ProfileView: View {
             .navigationBarHidden(true)
             .onAppear {
                 // Calculate and load the average ratings
+                calculateOverallAverageRating()
                 calculateAverageRatings()
             }
             .onAppear {
@@ -104,7 +116,50 @@ struct ProfileView: View {
             }
         }
     }
+    
+    private func calculateOverallAverageRating() {
+        let db = Firestore.firestore()
+        let ratingsCollection = db.collection("ratings")
 
+        // Query the ratings collection to get all ratings for the user
+        ratingsCollection.whereField("ratedUserID", isEqualTo: user.id ?? "").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching ratings: \(error.localizedDescription)")
+                return
+            }
+
+            var totalRating = 0.0
+            var numberOfRatings = 0
+
+            // Iterate through the ratings documents to calculate the total rating
+            for document in snapshot!.documents {
+                if
+                    let promptnessRating = document["promptnessRating"] as? Int,
+                    let respectfulnessRating = document["respectfulnessRating"] as? Int,
+                    let comfortabilityRating = document["comfortabilityRating"] as? Int,
+                    let presentationRating = document["presentationRating"] as? Int,
+                    let conversationQualityRating = document["conversationQualityRating"] as? Int {
+
+                    // Calculate the average rating for each category
+                    let averageCategoryRating = (promptnessRating + respectfulnessRating + comfortabilityRating + presentationRating + conversationQualityRating) / 5
+
+                    totalRating += Double(averageCategoryRating)
+                    numberOfRatings += 1
+                }
+            }
+
+            if numberOfRatings > 0 {
+                // Calculate the overall average rating
+                overallAverageRating = totalRating / Double(numberOfRatings)
+            } else {
+                // Handle the case where there are no ratings yet
+                overallAverageRating = 0.0
+            }
+            print("overall average rating")
+            print(overallAverageRating)
+        }
+    }
+    
     private func calculateAverageRatings() {
         let db = Firestore.firestore()
         let ratingsCollection = db.collection("ratings")
