@@ -48,9 +48,9 @@ struct ProfileView: View {
                         .cornerRadius(8)
                 }
                 .padding()
-//                .sheet(isPresented: $isRatingViewPresented) {
-//                    RatingView(ratedUser: user)
-//                }
+                .sheet(isPresented: $isRatingViewPresented) {
+                    RatingView(ratedUser: user)
+                }
             }
         }
     }

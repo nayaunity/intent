@@ -42,6 +42,7 @@
 		71E11AB12AA8F0C600DA8FF2 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB02AA8F0C600DA8FF2 /* FilterView.swift */; };
 		71E11AB32AA9004B00DA8FF2 /* RefreshFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */; };
 		71E11AB52AA902FB00DA8FF2 /* PersonalProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */; };
+		71E11AB82AAA349700DA8FF2 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11AB72AAA349700DA8FF2 /* RatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		71E11AB02AA8F0C600DA8FF2 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshFlag.swift; sourceTree = "<group>"; };
 		71E11AB42AA902FB00DA8FF2 /* PersonalProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalProfileView.swift; sourceTree = "<group>"; };
+		71E11AB72AAA349700DA8FF2 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +204,7 @@
 		71E11A612AA54EEF00DA8FF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				71E11AB62AAA348B00DA8FF2 /* Rating */,
 				71E11AAF2AA8F0BB00DA8FF2 /* Filter */,
 				71E11AA82AA81E5800DA8FF2 /* Messaging */,
 				71E11AA52AA7CCC100DA8FF2 /* Scroll */,
@@ -348,6 +351,14 @@
 				71E11AB02AA8F0C600DA8FF2 /* FilterView.swift */,
 			);
 			path = Filter;
+			sourceTree = "<group>";
+		};
+		71E11AB62AAA348B00DA8FF2 /* Rating */ = {
+			isa = PBXGroup;
+			children = (
+				71E11AB72AAA349700DA8FF2 /* RatingView.swift */,
+			);
+			path = Rating;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -500,6 +511,7 @@
 				71E11A8C2AA5772400DA8FF2 /* LogoutLinkView.swift in Sources */,
 				71E11A972AA679E100DA8FF2 /* CardView.swift in Sources */,
 				71E11A892AA569F300DA8FF2 /* CreateProfileView.swift in Sources */,
+				71E11AB82AAA349700DA8FF2 /* RatingView.swift in Sources */,
 				71E11AA72AA7CCD000DA8FF2 /* ControllableScrollView.swift in Sources */,
 				71E11A782AA5541700DA8FF2 /* ListView.swift in Sources */,
 				71E11A752AA553FB00DA8FF2 /* FeedbackView.swift in Sources */,
