@@ -83,7 +83,7 @@ struct PersonalProfileView: View {
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
+struct PersonalProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView(user: mockUser())
     }
