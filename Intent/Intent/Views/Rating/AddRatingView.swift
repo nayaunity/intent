@@ -102,8 +102,8 @@ struct AddRatingView: View {
             }) {
                 Text("Submit Rating")
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .background(Color(hex: "C0C0C0"))
+                    .foregroundColor(.black)
                     .cornerRadius(8)
             }
             .disabled(isRatingSubmitted)

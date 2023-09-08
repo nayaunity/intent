@@ -35,7 +35,7 @@ struct RatingCategoryView: View {
                     Image(systemName: star <= rating ? "star.fill" : "star")
                         .resizable()
                         .frame(width: 40, height: 40)
-                        .foregroundColor(Color.yellow)
+                        .foregroundColor(Color(hex: "21258a"))
                         .onTapGesture {
                             self.rating = star
                         }

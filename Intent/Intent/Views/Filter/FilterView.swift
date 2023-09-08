@@ -31,7 +31,7 @@ struct FilterView: View {
                     Text(gender)
                         .padding()
                         .foregroundColor(selectedGenders.contains(gender) ? .white : .black)
-                        .background(selectedGenders.contains(gender) ? Color.blue : Color.gray.opacity(0.2))
+                        .background(selectedGenders.contains(gender) ? Color(hex: "21258a") : Color.gray.opacity(0.2))
                         .cornerRadius(8)
                 }
             }
@@ -40,6 +40,7 @@ struct FilterView: View {
                 presentationMode.wrappedValue.dismiss()
             }) {
                 Text("Apply")
+                    .foregroundColor(Color(hex: "21258a"))
             }
             
             Spacer()
