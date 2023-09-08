@@ -117,8 +117,8 @@ struct ProfileView: View {
                     }) {
                         Text("We went on a date")
                             .padding()
-                            .background(Color.black)
-                            .foregroundColor(.white)
+                            .background(Color(hex: "C0C0C0"))
+                            .foregroundColor(.black)
                             .cornerRadius(8)
                     }
                     .padding()

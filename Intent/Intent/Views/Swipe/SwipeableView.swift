@@ -38,10 +38,11 @@ struct SwipeableView: View {
                         // This block will be executed when filters are applied
                         fetchSwipedUsers()
                         fetchUsers()
+                        print("Selected genders: \(selectedGenders.sorted().joined(separator: ", "))")
                     }
                 }
                 
-                Text("Selected genders: \(selectedGenders.sorted().joined(separator: ", "))")
+//                Text("Selected genders: \(selectedGenders.sorted().joined(separator: ", "))")
                 
                 if let user = users.first {
                     CardView(user: user)
@@ -63,7 +64,9 @@ struct SwipeableView: View {
                                 }
                         )
                 } else {
-                    Text("No more profiles to show!")
+                    Spacer()
+                    Text("No more profiles to show, come back later or update your filters!")
+                        .multilineTextAlignment(.center)
                 }
 
                 Spacer()

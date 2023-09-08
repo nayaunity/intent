@@ -44,3 +44,13 @@ struct RatingCategoryView: View {
         }
     }
 }
+
+struct RatingCategoryView_Previews: PreviewProvider {
+    @State static var rating = 3 // Example rating for preview
+
+    static var previews: some View {
+        RatingCategoryView(category: "Category Name", rating: $rating, infoButtonAction: {})
+            .previewLayout(.sizeThatFits)
+            .padding()
+    }
+}
