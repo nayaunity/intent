@@ -25,8 +25,8 @@ struct PersonalProfileView: View {
 
     // Define the rating category order within the PersonalProfileView
     let ratingCategoryOrder: [String: Int] = [
-        "conversation quality": 1,
-        "picture match": 2,
+        "conversationquality": 1, // Change the order for "Conversation Quality"
+        "presentation": 2,        // Change the order for "Picture Match"
         "promptness": 3,
         "respectfulness": 4,
         "comfortability/safety": 5
@@ -72,7 +72,7 @@ struct PersonalProfileView: View {
                                 ratingCategoryOrder[$1.key.lowercased()] ?? Int.max
                             }), id: \.key) { (category, rating) in
                                 VStack {
-                                    Text("\(category.capitalized): \(String(format: "%.2f", rating))")
+                                    Text("\(mapCategoryName(category).capitalized): \(String(format: "%.2f", rating))")
                                         .font(.headline)
                                         .padding(.bottom)
                                     StarRatingView(rating: rating, starColor: Color(hex: "#21258a"))
@@ -94,6 +94,23 @@ struct PersonalProfileView: View {
             }
         }
     }
+    private func mapCategoryName(_ categoryName: String) -> String {
+        switch categoryName.lowercased() {
+        case "promptness":
+            return "On Time"
+        case "respectfulness":
+            return "Respectful"
+        case "conversationquality": // Corrected category name
+            return "Conversation Quality"
+        case "presentation":
+            return "Picture Match"
+        case "comfortability":
+            return "Comfortability/Safety"
+        default:
+            return categoryName
+        }
+    }
+
 
     func loadUserProfile() {
         let db = Firestore.firestore()
@@ -144,9 +161,9 @@ struct PersonalProfileView: View {
 
                     totalRatings["promptness"] = (totalRatings["promptness"] ?? 0) + Double(promptnessRating)
                     totalRatings["respectfulness"] = (totalRatings["respectfulness"] ?? 0) + Double(respectfulnessRating)
-                    totalRatings["comfortability/Safety"] = (totalRatings["comfortability"] ?? 0) + Double(comfortabilityRating)
-                    totalRatings["Picture Match"] = (totalRatings["presentation"] ?? 0) + Double(presentationRating)
-                    totalRatings["Conversation Quality"] = (totalRatings["conversationQuality"] ?? 0) + Double(conversationQualityRating)
+                    totalRatings["comfortability"] = (totalRatings["comfortability"] ?? 0) + Double(comfortabilityRating)
+                    totalRatings["presentation"] = (totalRatings["presentation"] ?? 0) + Double(presentationRating)
+                    totalRatings["conversationQuality"] = (totalRatings["conversationQuality"] ?? 0) + Double(conversationQualityRating)
 
                     ratingCounts["promptness"] = (ratingCounts["promptness"] ?? 0) + 1
                     ratingCounts["respectfulness"] = (ratingCounts["respectfulness"] ?? 0) + 1

@@ -58,7 +58,7 @@ struct AddRatingView: View {
             
             // Ratings for promptness with info button
             RatingCategoryView(
-                category: "Promptness",
+                category: "On Time",
                 rating: $promptnessRating,
                 infoButtonAction: {
                     // Show an info popup for "Promptness" category
@@ -71,7 +71,7 @@ struct AddRatingView: View {
 
             // Ratings for respectfulness with info button
             RatingCategoryView(
-                category: "Respectfulness",
+                category: "Respectful",
                 rating: $respectfulnessRating,
                 infoButtonAction: {
                     // Show an info popup for "Respectfulness" category
