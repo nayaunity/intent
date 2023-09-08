@@ -24,6 +24,7 @@ struct LoginView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 250, height: 250)
+                .offset(x: 10)
             Spacer()
             TextField("Email", text: $email)
                 .padding()
