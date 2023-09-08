@@ -35,7 +35,8 @@ struct ProfileView: View {
     var user: User
     @State private var averageRatings: [String: Double] = [:]
     @State private var isRatingViewPresented = false
-    @State private var overallAverageRating: Double = 0.0
+//    @State private var overallAverageRating: Double = 0.0
+    @State private var overallAverage: Double = 0.0 // Declare the overallAverage variable
     
     let ratingCategoryOrder: [String: Int] = [
         "conversation quality": 1,
@@ -68,10 +69,10 @@ struct ProfileView: View {
                     HStack {
 //                        Text("Overall Average Rating:")
                         VStack {
-                            Text("Overall Rating: \(String(format: "%.2f", overallAverageRating))")
+                            Text("Overall Rating: \(String(format: "%.2f", overallAverage))")
                                 .font(.headline)
                                 .padding(.bottom)
-                            StarRatingView(rating: overallAverageRating)
+                            StarRatingView(rating: overallAverage)
                                 .padding(.bottom)
                         }
                     }
@@ -118,7 +119,7 @@ struct ProfileView: View {
             .navigationBarHidden(true)
             .onAppear {
                 // Calculate and load the average ratings
-                calculateOverallAverageRating()
+//                calculateOverallAverageRating()
                 calculateAverageRatings()
             }
             .onAppear {
@@ -127,53 +128,69 @@ struct ProfileView: View {
         }
     }
     
-    private func calculateOverallAverageRating() {
-        let db = Firestore.firestore()
-        let ratingsCollection = db.collection("ratings")
+//    private func calculateOverallAverageRating() {
+//        let db = Firestore.firestore()
+//        let ratingsCollection = db.collection("ratings")
+//
+//        // Query the ratings collection to get all ratings for the user
+//        ratingsCollection.whereField("ratedUserID", isEqualTo: user.id ?? "").getDocuments { snapshot, error in
+//            if let error = error {
+//                print("Error fetching ratings: \(error.localizedDescription)")
+//                return
+//            }
+//
+//            var totalRating = 0.0
+//            var numberOfRatings = 0
+//
+//            // Iterate through the ratings documents to calculate the total rating
+//            for document in snapshot!.documents {
+//                if
+//                    let promptnessRating = document["promptnessRating"] as? Int,
+//                    let respectfulnessRating = document["respectfulnessRating"] as? Int,
+//                    let comfortabilityRating = document["comfortabilityRating"] as? Int,
+//                    let presentationRating = document["presentationRating"] as? Int,
+//                    let conversationQualityRating = document["conversationQualityRating"] as? Int {
+//
+//                    let ratings = [promptnessRating, respectfulnessRating, comfortabilityRating, presentationRating, conversationQualityRating]
+//
+//                    let sum = ratings.reduce(0) { result, ratings in
+//                        result + ratings
+//                    }
+//
+//                    let averageCategoryRating = Double(sum) / Double(ratings.count)
+//
+//                    totalRating += Double(averageCategoryRating)
+//                    numberOfRatings += 1
+//
+//
+//
+//                    // Print individual category ratings for debugging
+//                    print("Promptness Rating: \(promptnessRating)")
+//                    print("Respectfulness Rating: \(respectfulnessRating)")
+//                    print("Comfortability Rating: \(comfortabilityRating)")
+//                    print("Presentation Rating: \(presentationRating)")
+//                    print("Conversation Quality Rating: \(conversationQualityRating)")
+//                    print("Average Category Rating: \(averageCategoryRating)")
+//                }
+//            }
+//
+//            if numberOfRatings > 0 {
+//                // Calculate the overall average rating
+//                overallAverageRating = totalRating / Double(numberOfRatings)
+//            } else {
+//                // Handle the case where there are no ratings yet
+//                overallAverageRating = 0.0
+//            }
+//            print("Overall Average Rating: \(overallAverageRating)")
+//        }
+//    }
 
-        // Query the ratings collection to get all ratings for the user
-        ratingsCollection.whereField("ratedUserID", isEqualTo: user.id ?? "").getDocuments { snapshot, error in
-            if let error = error {
-                print("Error fetching ratings: \(error.localizedDescription)")
-                return
-            }
 
-            var totalRating = 0.0
-            var numberOfRatings = 0
-
-            // Iterate through the ratings documents to calculate the total rating
-            for document in snapshot!.documents {
-                if
-                    let promptnessRating = document["promptnessRating"] as? Int,
-                    let respectfulnessRating = document["respectfulnessRating"] as? Int,
-                    let comfortabilityRating = document["comfortabilityRating"] as? Int,
-                    let presentationRating = document["presentationRating"] as? Int,
-                    let conversationQualityRating = document["conversationQualityRating"] as? Int {
-
-                    // Calculate the average rating for each category
-                    let averageCategoryRating = (promptnessRating + respectfulnessRating + comfortabilityRating + presentationRating + conversationQualityRating) / 5
-
-                    totalRating += Double(averageCategoryRating)
-                    numberOfRatings += 1
-                }
-            }
-
-            if numberOfRatings > 0 {
-                // Calculate the overall average rating
-                overallAverageRating = totalRating / Double(numberOfRatings)
-            } else {
-                // Handle the case where there are no ratings yet
-                overallAverageRating = 0.0
-            }
-            print("overall average rating")
-            print(overallAverageRating)
-        }
-    }
     
     private func calculateAverageRatings() {
         let db = Firestore.firestore()
         let ratingsCollection = db.collection("ratings")
-        
+
         ratingsCollection.whereField("ratedUserID", isEqualTo: user.id ?? "")
             .getDocuments { (snapshot, error) in
                 if let error = error {
@@ -205,12 +222,25 @@ struct ProfileView: View {
                     ratingCounts["conversationQuality"] = (ratingCounts["conversationQuality"] ?? 0) + 1
                 }
 
+                var overallTotalRating = 0.0
+//                var overallRatingCount = 0
+
                 for (key, value) in totalRatings {
                     let average = value / Double(ratingCounts[key] ?? 1)
                     self.averageRatings[key] = average
+                    print("\(key) Average Rating: \(average)")
+                    
+                    // Calculate the overall total rating based on category averages
+                    overallTotalRating += average
+//                    overallRatingCount += 1
                 }
+                
+                // Calculate the overall average rating
+                overallAverage = overallTotalRating / 5
+                print("Overall Average Rating: \(overallAverage)")
             }
     }
+
 }
 
 struct ProfileView_Previews: PreviewProvider {

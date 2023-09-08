@@ -17,45 +17,79 @@ struct PersonalProfileView: View {
         self.userId = userId
     }
 
+    // Store the user's own ratings
+    @State private var ownRatings: [String: Double] = [:]
+
+    // Define the rating category order within the PersonalProfileView
+    let ratingCategoryOrder: [String: Int] = [
+        "conversation quality": 1,
+        "picture match": 2,
+        "promptness": 3,
+        "respectfulness": 4,
+        "comfortability/safety": 5
+    ]
+
     var body: some View {
-        VStack {
-            if let user = user {
-                WebImage(url: URL(string: user.profilePictureUrl))
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(Circle())
-                    .frame(width: 150, height: 150)
-                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    .padding()
+        NavigationView {
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    if let user = user {
+                        WebImage(url: URL(string: user.profilePictureUrl))
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                            .frame(width: 300, height: 400)
+                            .padding()
 
-                Text(user.name)
-                    .font(.title)
-                    .padding(.bottom)
+                        Text(user.name)
+                            .font(.largeTitle)
+                            .padding()
 
-                Text("Email: \(user.email)")
-                    .padding(.bottom)
+                        Text(user.bio)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .padding()
 
-                Text(user.bio)
-                    .font(.body)
-                    .multilineTextAlignment(.center)
-                    .padding()
+                        // Print statement to check if userId is correct
+                        let _ = print("User ID: \(userId)")
 
-                Text("Sex: \(user.sex)")
-                    .padding(.bottom)
+                        // Display the user's own ratings
+                        if !ownRatings.isEmpty {
+                            Text("Your Ratings:")
+                                .font(.headline)
+                                .padding(.top)
 
-                Text("Gender Identity: \(user.genderIdentity)")
-                    .padding(.bottom)
+                            // Print statement to check if ownRatings contains data
+//                            Text(ownRatings)
 
-                if let rating = user.rating {
-                    Text("Rating: \(rating, specifier: "%.1f")")
-                        .padding(.bottom)
+                            ForEach(ownRatings.sorted(by: {
+                                ratingCategoryOrder[$0.key.lowercased()] ?? Int.max <
+                                ratingCategoryOrder[$1.key.lowercased()] ?? Int.max
+                            }), id: \.key) { (category, rating) in
+                                VStack {
+                                    Text("\(category.capitalized): \(String(format: "%.2f", rating))")
+                                        .font(.headline)
+                                        .padding(.bottom)
+
+                                    StarRatingView(rating: rating)
+                                }
+                            }
+                        }
+                    } else {
+                        Text("Loading profile...")
+                    }
                 }
-            } else {
-                Text("Loading profile...")
+            }
+            .navigationBarHidden(true)
+            .onAppear {
+                // Calculate and load the user's own ratings
+                loadUserProfile()
+                loadOwnRatings()
+            }
+            .onAppear {
+                UIScrollView.appearance().showsVerticalScrollIndicator = false
             }
         }
-        .padding()
-        .onAppear(perform: loadUserProfile)
     }
 
     func loadUserProfile() {
@@ -73,7 +107,7 @@ struct PersonalProfileView: View {
                 let genderIdentity = data["genderIdentity"] as? String ?? ""
                 let profilePictureUrl = data["profilePictureUrl"] as? String ?? ""
                 let rating = data["rating"] as? Double
-                
+
                 // Initialize the user state
                 self.user = User(id: id, name: name, bio: bio, email: email, sex: sex, genderIdentity: genderIdentity, profilePictureUrl: profilePictureUrl, rating: rating)
             } else {
@@ -81,14 +115,60 @@ struct PersonalProfileView: View {
             }
         }
     }
+
+    // Function to load the user's own ratings
+    func loadOwnRatings() {
+        let db = Firestore.firestore()
+        let ratingsCollection = db.collection("ratings")
+
+        ratingsCollection.whereField("raterID", isEqualTo: userId).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching ratings: \(error.localizedDescription)")
+                return
+            }
+
+            guard let snapshot = snapshot else {
+                print("Snapshot is nil.")
+                return
+            }
+
+            var ownRatings: [String: Double] = [:]
+
+            for document in snapshot.documents {
+                let data = document.data()
+
+                if
+                    let promptnessRating = data["promptnessRating"] as? Int,
+                    let respectfulnessRating = data["respectfulnessRating"] as? Int,
+                    let comfortabilityRating = data["comfortabilityRating"] as? Int,
+                    let presentationRating = data["presentationRating"] as? Int,
+                    let conversationQualityRating = data["conversationQualityRating"] as? Int {
+
+                    // Calculate the average rating for each category
+                    let ratings = [promptnessRating, respectfulnessRating, comfortabilityRating, presentationRating, conversationQualityRating]
+                    
+                    let sum = ratings.reduce(0) { result, ratings in
+                        result + ratings
+                    }
+                    
+                    let averageCategoryRating = Double(sum) / Double(ratings.count)
+
+                    // Use the category name or a more descriptive field as the key
+                    let categoryName = "Average Rating" // Change this to your desired category name
+                    ownRatings[categoryName] = Double(averageCategoryRating)
+                }
+            }
+
+            self.ownRatings = ownRatings
+            print("Loaded Own Ratings: \(ownRatings)")
+        }
+    }
+
+
 }
 
 struct PersonalProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView(user: mockUser())
-    }
-    
-    static func mockUser() -> User {
-        return User(id: "mockUserId", name: "Alex", bio: "Friendly and outgoing", email: "alex@example.com", sex: "Male", genderIdentity: "Man", profilePictureUrl: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2787&q=80", rating: 4.5)
+        PersonalProfileView(userId: "fRo8nSNAUHSfdjDuXROCyVik8U83")
     }
 }
