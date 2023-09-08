@@ -103,9 +103,9 @@ struct PersonalProfileView: View {
                             }) {
                                 Text("Edit Profile")
                                     .font(.headline)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.black)
                                     .padding()
-                                    .background(Color.blue)
+                                    .background(Color(hex: "C0C0C0"))
                                     .cornerRadius(10)
                             }
                             .sheet(isPresented: $isEditingProfile) {
