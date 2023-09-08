@@ -11,6 +11,9 @@ import SDWebImageSwiftUI
 
 struct PersonalProfileView: View {
     @State private var user: User?
+    @State private var averageRatings: [String: Double] = [:]
+    @State private var overallAverage: Double = 0.0 // Declare the overallAverage variable
+    
     let userId: String
 
     init(userId: String) {
@@ -40,29 +43,31 @@ struct PersonalProfileView: View {
                             .clipShape(Circle())
                             .frame(width: 300, height: 400)
                             .padding()
-
+                        
                         Text(user.name)
                             .font(.largeTitle)
                             .padding()
-
+                        
                         Text(user.bio)
                             .font(.subheadline)
                             .foregroundColor(.gray)
                             .padding()
-
-                        // Print statement to check if userId is correct
-                        let _ = print("User ID: \(userId)")
-
-                        // Display the user's own ratings
-                        if !ownRatings.isEmpty {
-                            Text("Your Ratings:")
+                        
+                        HStack {
+                            VStack {
+                                Text("Overall Rating: \(String(format: "%.2f", overallAverage))")
+                                    .font(.headline)
+                                    .padding(.bottom)
+                                StarRatingView(rating: overallAverage)
+                                    .padding(.bottom)
+                            }
+                        }
+                        if averageRatings.isEmpty {
+                            Text("No ratings yet")
                                 .font(.headline)
-                                .padding(.top)
-
-                            // Print statement to check if ownRatings contains data
-//                            Text(ownRatings)
-
-                            ForEach(ownRatings.sorted(by: {
+                                .padding()
+                        } else {
+                            ForEach(averageRatings.sorted(by: {
                                 ratingCategoryOrder[$0.key.lowercased()] ?? Int.max <
                                 ratingCategoryOrder[$1.key.lowercased()] ?? Int.max
                             }), id: \.key) { (category, rating) in
@@ -70,24 +75,22 @@ struct PersonalProfileView: View {
                                     Text("\(category.capitalized): \(String(format: "%.2f", rating))")
                                         .font(.headline)
                                         .padding(.bottom)
-
                                     StarRatingView(rating: rating)
+                                        .padding(.bottom)
                                 }
                             }
                         }
-                    } else {
-                        Text("Loading profile...")
                     }
                 }
-            }
-            .navigationBarHidden(true)
-            .onAppear {
-                // Calculate and load the user's own ratings
-                loadUserProfile()
-                loadOwnRatings()
-            }
-            .onAppear {
-                UIScrollView.appearance().showsVerticalScrollIndicator = false
+                .navigationBarHidden(true)
+                .onAppear {
+                    // Calculate and load the user's own ratings
+                    loadUserProfile()
+                    calculateAverageRatings()
+                }
+                .onAppear {
+                    UIScrollView.appearance().showsVerticalScrollIndicator = false
+                }
             }
         }
     }
@@ -116,54 +119,58 @@ struct PersonalProfileView: View {
         }
     }
 
-    // Function to load the user's own ratings
-    func loadOwnRatings() {
+    // Function to load the user's own ratings and calculate overall average
+    private func calculateAverageRatings() {
         let db = Firestore.firestore()
         let ratingsCollection = db.collection("ratings")
 
-        ratingsCollection.whereField("raterID", isEqualTo: userId).getDocuments { snapshot, error in
-            if let error = error {
-                print("Error fetching ratings: \(error.localizedDescription)")
-                return
-            }
-
-            guard let snapshot = snapshot else {
-                print("Snapshot is nil.")
-                return
-            }
-
-            var ownRatings: [String: Double] = [:]
-
-            for document in snapshot.documents {
-                let data = document.data()
-
-                if
-                    let promptnessRating = data["promptnessRating"] as? Int,
-                    let respectfulnessRating = data["respectfulnessRating"] as? Int,
-                    let comfortabilityRating = data["comfortabilityRating"] as? Int,
-                    let presentationRating = data["presentationRating"] as? Int,
-                    let conversationQualityRating = data["conversationQualityRating"] as? Int {
-
-                    // Calculate the average rating for each category
-                    let ratings = [promptnessRating, respectfulnessRating, comfortabilityRating, presentationRating, conversationQualityRating]
-                    
-                    let sum = ratings.reduce(0) { result, ratings in
-                        result + ratings
-                    }
-                    
-                    let averageCategoryRating = Double(sum) / Double(ratings.count)
-
-                    // Use the category name or a more descriptive field as the key
-                    let categoryName = "Average Rating" // Change this to your desired category name
-                    ownRatings[categoryName] = Double(averageCategoryRating)
+        ratingsCollection.whereField("ratedUserID", isEqualTo: userId ?? "")
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Error fetching ratings: \(error)")
+                    return
                 }
+
+                var totalRatings: [String: Double] = [:]
+                var ratingCounts: [String: Int] = [:]
+
+                for document in snapshot?.documents ?? [] {
+                    let data = document.data()
+                    let promptnessRating = data["promptnessRating"] as? Int ?? 0
+                    let respectfulnessRating = data["respectfulnessRating"] as? Int ?? 0
+                    let comfortabilityRating = data["comfortabilityRating"] as? Int ?? 0
+                    let presentationRating = data["presentationRating"] as? Int ?? 0
+                    let conversationQualityRating = data["conversationQualityRating"] as? Int ?? 0
+
+                    totalRatings["promptness"] = (totalRatings["promptness"] ?? 0) + Double(promptnessRating)
+                    totalRatings["respectfulness"] = (totalRatings["respectfulness"] ?? 0) + Double(respectfulnessRating)
+                    totalRatings["comfortability/Safety"] = (totalRatings["comfortability"] ?? 0) + Double(comfortabilityRating)
+                    totalRatings["Picture Match"] = (totalRatings["presentation"] ?? 0) + Double(presentationRating)
+                    totalRatings["Conversation Quality"] = (totalRatings["conversationQuality"] ?? 0) + Double(conversationQualityRating)
+
+                    ratingCounts["promptness"] = (ratingCounts["promptness"] ?? 0) + 1
+                    ratingCounts["respectfulness"] = (ratingCounts["respectfulness"] ?? 0) + 1
+                    ratingCounts["comfortability"] = (ratingCounts["comfortability"] ?? 0) + 1
+                    ratingCounts["presentation"] = (ratingCounts["presentation"] ?? 0) + 1
+                    ratingCounts["conversationQuality"] = (ratingCounts["conversationQuality"] ?? 0) + 1
+                }
+
+                var overallTotalRating = 0.0
+
+                for (key, value) in totalRatings {
+                    let average = value / Double(ratingCounts[key] ?? 1)
+                    self.averageRatings[key] = average
+                    print("\(key) Average Rating: \(average)")
+                    
+                    // Calculate the overall total rating based on category averages
+                    overallTotalRating += average
+                }
+                
+                // Calculate the overall average rating
+                overallAverage = overallTotalRating / 5
+                print("Overall Average Rating: \(overallAverage)")
             }
-
-            self.ownRatings = ownRatings
-            print("Loaded Own Ratings: \(ownRatings)")
-        }
     }
-
 
 }
 
