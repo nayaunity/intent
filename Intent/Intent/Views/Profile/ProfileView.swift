@@ -67,11 +67,13 @@ struct ProfileView: View {
                     
                     HStack {
                         VStack {
-                            Text("Overall Rating: \(String(format: "%.2f", overallAverage))")
-                                .font(.headline)
-                                .padding(.bottom)
-                            StarRatingView(rating: overallAverage)
-                                .padding(.bottom)
+                            if overallAverage > 0 {
+                                Text("Overall Rating: \(String(format: "%.2f", overallAverage))")
+                                    .font(.headline)
+                                    .padding(.bottom)
+                                StarRatingView(rating: overallAverage)
+                                    .padding(.bottom)
+                            }
                         }
                     }
 
@@ -107,7 +109,7 @@ struct ProfileView: View {
                     }) {
                         Text("We went on a date")
                             .padding()
-                            .background(Color.blue)
+                            .background(Color.black)
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }

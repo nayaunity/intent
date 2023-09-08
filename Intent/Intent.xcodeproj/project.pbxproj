@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		716052692AAAC01500A2D69B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716052682AAAC01500A2D69B /* Color.swift */; };
 		71E11A362AA54E8900DA8FF2 /* IntentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A352AA54E8900DA8FF2 /* IntentApp.swift */; };
 		71E11A382AA54E8900DA8FF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A372AA54E8900DA8FF2 /* ContentView.swift */; };
 		71E11A3A2AA54E8A00DA8FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71E11A392AA54E8A00DA8FF2 /* Assets.xcassets */; };
@@ -67,6 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		716052682AAAC01500A2D69B /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		71E11A322AA54E8900DA8FF2 /* Intent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Intent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E11A352AA54E8900DA8FF2 /* IntentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentApp.swift; sourceTree = "<group>"; };
 		71E11A372AA54E8900DA8FF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 			children = (
 				71E11A912AA66BC600DA8FF2 /* ImagePicker.swift */,
 				71E11AB22AA9004B00DA8FF2 /* RefreshFlag.swift */,
+				716052682AAAC01500A2D69B /* Color.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				71E11AC72AAA6AB400DA8FF2 /* AddRatingView.swift in Sources */,
 				71E11A732AA54FA400DA8FF2 /* SwipeableView.swift in Sources */,
 				71E11AAC2AA8EAE500DA8FF2 /* Message.swift in Sources */,
+				716052692AAAC01500A2D69B /* Color.swift in Sources */,
 				71E11A712AA54F9100DA8FF2 /* ProfileView.swift in Sources */,
 				71E11AC52AAA697E00DA8FF2 /* RatingCategoryView.swift in Sources */,
 				71E11AC12AAA43AC00DA8FF2 /* Rating.swift in Sources */,
