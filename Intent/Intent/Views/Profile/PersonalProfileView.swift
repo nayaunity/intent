@@ -10,17 +10,18 @@ import Firebase
 import SDWebImageSwiftUI
 
 struct PersonalProfileView: View {
+    @ObservedObject var userData: UserData
+    let userId: String
+    
     @State private var user: User?
-    @State private var userBinding: User?
     @State private var averageRatings: [String: Double] = [:]
     @State private var overallAverage: Double = 0.0
     @State private var isEditingProfile = false
+    @State private var shouldRefresh = false
 
-    let userId: String
-
-    init(userId: String) {
+    init(userData: UserData, userId: String) {
+        self.userData = userData
         self.userId = userId
-        self._userBinding = State(initialValue: User(id: "", name: "", bio: "", email: "", sex: "", genderIdentity: "", profilePictureUrl: "", rating: 0.0))
     }
 
     @State private var ownRatings: [String: Double] = [:]
@@ -32,6 +33,19 @@ struct PersonalProfileView: View {
         "respectfulness": 4,
         "comfortability/safety": 5
     ]
+    
+    private var userBinding: Binding<User> {
+        Binding<User>(
+            get: {
+                // Provide a default User if user is nil
+                return user ?? User(id: "", name: "", bio: "", email: "", sex: "", genderIdentity: "", profilePictureUrl: "", rating: 0.0)
+            },
+            set: {
+                // Update the user when the binding is set
+                user = $0
+            }
+        )
+    }
 
     var body: some View {
         NavigationView {
@@ -86,7 +100,6 @@ struct PersonalProfileView: View {
                         HStack {
                             Button(action: {
                                 isEditingProfile = true
-                                userBinding = user
                             }) {
                                 Text("Edit Profile")
                                     .font(.headline)
@@ -96,11 +109,7 @@ struct PersonalProfileView: View {
                                     .cornerRadius(10)
                             }
                             .sheet(isPresented: $isEditingProfile) {
-                                if let userBinding = userBinding {
-                                    EditProfileView(isPresented: $isEditingProfile, user: $userBinding)
-                                } else {
-                                    Text("Loading...")
-                                }
+                                EditProfileView(isPresented: $isEditingProfile, user: userBinding, userData: userData)
                             }
                         }
                     }
@@ -112,6 +121,13 @@ struct PersonalProfileView: View {
                 }
                 .onAppear {
                     UIScrollView.appearance().showsVerticalScrollIndicator = false
+                }
+                .onAppear {
+                    // Check the shouldRefresh flag and reload user profile if needed
+                    if shouldRefresh {
+                        loadUserProfile()
+                        calculateAverageRatings()
+                    }
                 }
             }
         }
@@ -207,8 +223,8 @@ struct PersonalProfileView: View {
     }
 }
 
-struct PersonalProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        PersonalProfileView(userId: "fRo8nSNAUHSfdjDuXROCyVik8U83")
-    }
-}
+//struct PersonalProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PersonalProfileView(userId: "fRo8nSNAUHSfdjDuXROCyVik8U83")
+//    }
+//}

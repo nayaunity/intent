@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		716052692AAAC01500A2D69B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716052682AAAC01500A2D69B /* Color.swift */; };
 		7160526B2AABB8D700A2D69B /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160526A2AABB8D700A2D69B /* EditProfileView.swift */; };
+		7160526F2AABD4E100A2D69B /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7160526E2AABD4E100A2D69B /* UserData.swift */; };
 		71E11A362AA54E8900DA8FF2 /* IntentApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A352AA54E8900DA8FF2 /* IntentApp.swift */; };
 		71E11A382AA54E8900DA8FF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E11A372AA54E8900DA8FF2 /* ContentView.swift */; };
 		71E11A3A2AA54E8A00DA8FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71E11A392AA54E8A00DA8FF2 /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 /* Begin PBXFileReference section */
 		716052682AAAC01500A2D69B /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		7160526A2AABB8D700A2D69B /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		7160526E2AABD4E100A2D69B /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		71E11A322AA54E8900DA8FF2 /* Intent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Intent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E11A352AA54E8900DA8FF2 /* IntentApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentApp.swift; sourceTree = "<group>"; };
 		71E11A372AA54E8900DA8FF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				71E11A6C2AA54F7700DA8FF2 /* User.swift */,
 				71E11AAB2AA8EAE500DA8FF2 /* Message.swift */,
 				71E11AC02AAA43AC00DA8FF2 /* Rating.swift */,
+				7160526E2AABD4E100A2D69B /* UserData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 			files = (
 				71E11ABD2AAA405300DA8FF2 /* RatingAlertView.swift in Sources */,
 				71E11AB12AA8F0C600DA8FF2 /* FilterView.swift in Sources */,
+				7160526F2AABD4E100A2D69B /* UserData.swift in Sources */,
 				71E11A922AA66BC600DA8FF2 /* ImagePicker.swift in Sources */,
 				71E11A6F2AA54F8A00DA8FF2 /* LoginView.swift in Sources */,
 				71E11A382AA54E8900DA8FF2 /* ContentView.swift in Sources */,

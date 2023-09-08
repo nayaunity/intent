@@ -5,19 +5,20 @@
 //  Created by Nyaradzo Bere on 9/8/23.
 //
 
-import Foundation
 import SwiftUI
 import Firebase
 
 struct EditProfileView: View {
     @Binding var isPresented: Bool
-    @Binding var user: User? // Pass the user object that you want to edit
-    @State private var editedBio: String // Add a state variable for edited bio
+    @Binding var user: User
+    @State private var editedBio: String
+    let userData: UserData
 
-    init(isPresented: Binding<Bool>, user: Binding<User?>) {
+    init(isPresented: Binding<Bool>, user: Binding<User>, userData: UserData) {
         _isPresented = isPresented
         _user = user
-        _editedBio = State(initialValue: user.wrappedValue?.bio ?? "")
+        _editedBio = State(initialValue: user.wrappedValue.bio)
+        self.userData = userData
     }
 
     var body: some View {
@@ -40,18 +41,17 @@ struct EditProfileView: View {
         }
     }
 
-    // Function to update the user's bio in Firestore
     private func updateUserBio() {
         guard let uid = Auth.auth().currentUser?.uid else {
             return // User is not authenticated
         }
-        
+
         // Reference to the Firestore database
         let db = Firestore.firestore()
-        
+
         // Reference to the user document
         let userRef = db.collection("users").document(uid)
-        
+
         // Update the bio field in Firestore with the edited bio
         userRef.updateData(["bio": editedBio]) { error in
             if let error = error {
@@ -59,12 +59,15 @@ struct EditProfileView: View {
             } else {
                 // Successfully updated bio
                 // Update the user object with the edited bio
-                user?.bio = editedBio
+                user.bio = editedBio
+                userData.updateUserBio(newBio: editedBio)
                 isPresented = false
             }
         }
     }
 }
+
+
 
 
 //struct EditProfileView_Previews: PreviewProvider {

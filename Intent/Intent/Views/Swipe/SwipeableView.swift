@@ -18,6 +18,7 @@ struct SwipeableView: View {
     @State private var showMatchesView: Bool = false
     @State private var showLoginView: Bool = false
     @State private var showProfileView: Bool = false
+    @ObservedObject var userData = UserData() // Initialize userData
 
 
     var body: some View {
@@ -96,7 +97,7 @@ struct SwipeableView: View {
                 }
                 
                 NavigationLink("", destination: MatchesView(), isActive: $showMatchesView).hidden()
-                NavigationLink("", destination: PersonalProfileView(userId: Auth.auth().currentUser?.uid ?? ""), isActive: $showProfileView).hidden()
+                NavigationLink("", destination: PersonalProfileView(userData: userData, userId: Auth.auth().currentUser?.uid ?? ""), isActive: $showProfileView).hidden()
                 NavigationLink("", destination: LoginView(), isActive: $showLoginView).hidden()
             }
             .onAppear {
