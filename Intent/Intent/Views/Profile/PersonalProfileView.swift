@@ -58,7 +58,7 @@ struct PersonalProfileView: View {
                                 Text("Overall Rating: \(String(format: "%.2f", overallAverage))")
                                     .font(.headline)
                                     .padding(.bottom)
-                                StarRatingView(rating: overallAverage)
+                                StarRatingView(rating: overallAverage, starColor: Color(hex: "#21258a"))
                                     .padding(.bottom)
                             }
                         }
@@ -75,7 +75,7 @@ struct PersonalProfileView: View {
                                     Text("\(category.capitalized): \(String(format: "%.2f", rating))")
                                         .font(.headline)
                                         .padding(.bottom)
-                                    StarRatingView(rating: rating)
+                                    StarRatingView(rating: rating, starColor: Color(hex: "#21258a"))
                                         .padding(.bottom)
                                 }
                             }

@@ -29,7 +29,7 @@ struct SwipeableView: View {
                 }) {
                     Text("Filter")
                         .padding()
-                        .background(Color.blue)
+                        .background(Color(hex: "21258a"))
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }

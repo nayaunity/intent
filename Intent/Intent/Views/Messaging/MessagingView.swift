@@ -132,7 +132,7 @@ struct CurrentUserMessageView: View {
             Spacer()
             Text(message)
                 .padding()
-                .background(Color.blue)
+                .background(Color(hex: "21258a"))
                 .foregroundColor(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
         }

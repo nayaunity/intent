@@ -14,6 +14,12 @@ struct StarRatingView: View {
     let rating: Double
     let maxRating: Double = 5.0 // Maximum rating value (e.g., 5 stars)
     let starCount: Int = 5 // Number of stars in the rating
+    let starColor: Color // Parameter to accept a custom star color
+
+    init(rating: Double, starColor: Color) {
+        self.rating = rating
+        self.starColor = starColor
+    }
 
     var body: some View {
         HStack {
@@ -21,14 +27,16 @@ struct StarRatingView: View {
                 let doubleIndex = Double(index)
                 let fullStar = min(max(0, rating - (doubleIndex - 1.0)), 1)
                 let halfStar = min(max(0, rating - (doubleIndex - 0.5)), 0.5)
-                
+
                 Image(systemName: fullStar >= 0.9 ? "star.fill" : (fullStar >= 0.5 || halfStar >= 0.5) ? "star.leadinghalf.fill" : halfStar > 0.0 ? "star.half.fill" : "star")
-                    .foregroundColor(fullStar > 0.0 ? .yellow : .gray)
+                    .foregroundColor(fullStar > 0.0 ? starColor : .gray)
                     .font(.system(size: 20))
             }
         }
     }
 }
+
+
 
 
 struct ProfileView: View {
@@ -71,7 +79,7 @@ struct ProfileView: View {
                                 Text("Overall Rating: \(String(format: "%.2f", overallAverage))")
                                     .font(.headline)
                                     .padding(.bottom)
-                                StarRatingView(rating: overallAverage)
+                                StarRatingView(rating: overallAverage, starColor: Color(hex: "#21258a"))
                                     .padding(.bottom)
                             }
                         }
@@ -91,7 +99,7 @@ struct ProfileView: View {
                                 Text("\(category.capitalized): \(String(format: "%.2f", rating))")
                                     .font(.headline)
                                     .padding(.bottom)
-                                StarRatingView(rating: rating)
+                                StarRatingView(rating: rating, starColor: Color(hex: "#21258a"))
                                     .padding(.bottom)
                             }
                         }
