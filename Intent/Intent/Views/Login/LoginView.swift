@@ -20,6 +20,11 @@ struct LoginView: View {
 
     var content: some View {
         VStack(alignment: .center, spacing: 20) {
+            Image("StellrLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 250, height: 250)
+            Spacer()
             TextField("Email", text: $email)
                 .padding()
                 .background(Color(.systemGray6))
@@ -43,15 +48,18 @@ struct LoginView: View {
                 .background(Color.white)
                 .foregroundColor(.black)
                 .cornerRadius(8)
+            Spacer()
+            Spacer()
+            Spacer()
         }
         .padding(.horizontal, 40)
-//        .background(
-//            Image("intentLoginImage")
-//                .resizable()
-//                .scaledToFill()
-//                .edgesIgnoringSafeArea(.all)
-//                .offset(y: 100)
-//        )
+        .background(
+            Image("intentLogin")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+                .offset(y: 100)
+        )
 //        .onAppear {
 //            Auth.auth().addStateDidChangeListener { auth, user in
 //                if user != nil {
