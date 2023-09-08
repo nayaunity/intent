@@ -11,22 +11,23 @@ import SDWebImageSwiftUI
 
 struct PersonalProfileView: View {
     @State private var user: User?
+    @State private var userBinding: User?
     @State private var averageRatings: [String: Double] = [:]
-    @State private var overallAverage: Double = 0.0 // Declare the overallAverage variable
-    
+    @State private var overallAverage: Double = 0.0
+    @State private var isEditingProfile = false
+
     let userId: String
 
     init(userId: String) {
         self.userId = userId
+        self._userBinding = State(initialValue: User(id: "", name: "", bio: "", email: "", sex: "", genderIdentity: "", profilePictureUrl: "", rating: 0.0))
     }
 
-    // Store the user's own ratings
     @State private var ownRatings: [String: Double] = [:]
 
-    // Define the rating category order within the PersonalProfileView
     let ratingCategoryOrder: [String: Int] = [
-        "conversationquality": 1, // Change the order for "Conversation Quality"
-        "presentation": 2,        // Change the order for "Picture Match"
+        "conversationquality": 1,
+        "presentation": 2,
         "promptness": 3,
         "respectfulness": 4,
         "comfortability/safety": 5
@@ -43,16 +44,16 @@ struct PersonalProfileView: View {
                             .clipShape(Circle())
                             .frame(width: 300, height: 400)
                             .padding()
-                        
+
                         Text(user.name)
                             .font(.largeTitle)
                             .padding()
-                        
+
                         Text(user.bio)
                             .font(.subheadline)
                             .foregroundColor(.gray)
                             .padding()
-                        
+
                         HStack {
                             VStack {
                                 Text("Overall Rating: \(String(format: "%.2f", overallAverage))")
@@ -62,6 +63,7 @@ struct PersonalProfileView: View {
                                     .padding(.bottom)
                             }
                         }
+
                         if averageRatings.isEmpty {
                             Text("No ratings yet")
                                 .font(.headline)
@@ -80,11 +82,31 @@ struct PersonalProfileView: View {
                                 }
                             }
                         }
+
+                        HStack {
+                            Button(action: {
+                                isEditingProfile = true
+                                userBinding = user
+                            }) {
+                                Text("Edit Profile")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .cornerRadius(10)
+                            }
+                            .sheet(isPresented: $isEditingProfile) {
+                                if let userBinding = userBinding {
+                                    EditProfileView(isPresented: $isEditingProfile, user: $userBinding)
+                                } else {
+                                    Text("Loading...")
+                                }
+                            }
+                        }
                     }
                 }
                 .navigationBarHidden(true)
                 .onAppear {
-                    // Calculate and load the user's own ratings
                     loadUserProfile()
                     calculateAverageRatings()
                 }
@@ -94,13 +116,14 @@ struct PersonalProfileView: View {
             }
         }
     }
+
     private func mapCategoryName(_ categoryName: String) -> String {
         switch categoryName.lowercased() {
         case "promptness":
             return "On Time"
         case "respectfulness":
             return "Respectful"
-        case "conversationquality": // Corrected category name
+        case "conversationquality":
             return "Conversation Quality"
         case "presentation":
             return "Picture Match"
@@ -111,14 +134,12 @@ struct PersonalProfileView: View {
         }
     }
 
-
     func loadUserProfile() {
         let db = Firestore.firestore()
         let docRef = db.collection("users").document(userId)
 
         docRef.getDocument { (document, error) in
             if let document = document, document.exists, let data = document.data() {
-                // Extract data from the document and initialize a User object
                 let id = document.documentID
                 let name = data["name"] as? String ?? ""
                 let bio = data["bio"] as? String ?? ""
@@ -128,7 +149,6 @@ struct PersonalProfileView: View {
                 let profilePictureUrl = data["profilePictureUrl"] as? String ?? ""
                 let rating = data["rating"] as? Double
 
-                // Initialize the user state
                 self.user = User(id: id, name: name, bio: bio, email: email, sex: sex, genderIdentity: genderIdentity, profilePictureUrl: profilePictureUrl, rating: rating)
             } else {
                 print("Document does not exist or there was an error: \(error?.localizedDescription ?? "Unknown error")")
@@ -136,12 +156,11 @@ struct PersonalProfileView: View {
         }
     }
 
-    // Function to load the user's own ratings and calculate overall average
     private func calculateAverageRatings() {
         let db = Firestore.firestore()
         let ratingsCollection = db.collection("ratings")
 
-        ratingsCollection.whereField("ratedUserID", isEqualTo: userId ?? "")
+        ratingsCollection.whereField("ratedUserID", isEqualTo: userId)
             .getDocuments { (snapshot, error) in
                 if let error = error {
                     print("Error fetching ratings: \(error)")
@@ -178,17 +197,14 @@ struct PersonalProfileView: View {
                     let average = value / Double(ratingCounts[key] ?? 1)
                     self.averageRatings[key] = average
                     print("\(key) Average Rating: \(average)")
-                    
-                    // Calculate the overall total rating based on category averages
+
                     overallTotalRating += average
                 }
-                
-                // Calculate the overall average rating
+
                 overallAverage = overallTotalRating / 5
                 print("Overall Average Rating: \(overallAverage)")
             }
     }
-
 }
 
 struct PersonalProfileView_Previews: PreviewProvider {
