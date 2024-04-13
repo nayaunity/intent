@@ -6,7 +6,7 @@ Intent is a modern dating app crafted with SwiftUI, designed to bring people tog
 ## 🎥 Walkthrough
 Watch this short video to see the app in action:
 
-[![Stellr - Walkthrough Video](http://img.youtube.com/vi/7319671678299131178/0.jpg)](https://www.tiktok.com/@theblackfemaleengineer/video/7319671678299131178?is_from_webapp=1&sender_device=pc&web_id=7290331159584966187)
+[![Stellr - Walkthrough Video]](https://www.tiktok.com/@theblackfemaleengineer/video/7319671678299131178?is_from_webapp=1&sender_device=pc&web_id=7290331159584966187)
 
 ## 💡 Features
 
