@@ -3,6 +3,11 @@
 ## 🌟 Introduction
 Intent is a modern dating app crafted with SwiftUI, designed to bring people together with thoughtfulness and innovation. Whether looking for a casual chat or a meaningful connection, Intent provides a suite of features to make meaningful connections possible.
 
+## 🎥 Walkthrough
+Watch this short video to see the app in action:
+
+[![Stellr - Walkthrough Video](http://img.youtube.com/vi/7319671678299131178/0.jpg)](https://www.tiktok.com/@theblackfemaleengineer/video/7319671678299131178?is_from_webapp=1&sender_device=pc&web_id=7290331159584966187)
+
 ## 💡 Features
 
 - **Swipe & Match**: Users swipe to like or pass on other users. Matches occur when two users mutually like each other.
