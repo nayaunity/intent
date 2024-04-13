@@ -1,4 +1,4 @@
-# Intent - Dating App
+# Stellr - Dating App
 
 ## 🌟 Introduction
 Intent is a modern dating app crafted with SwiftUI, designed to bring people together with thoughtfulness and innovation. Whether looking for a casual chat or a meaningful connection, Intent provides a suite of features to make meaningful connections possible.
